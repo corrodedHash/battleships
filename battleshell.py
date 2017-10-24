@@ -6,7 +6,7 @@ import field
 import util
 
 class BattleShell(cmd.Cmd):
-    intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
+    intro = 'Welcome to the [b]4ttl3shell.   Type help or ? to list commands.\n'
     prompt = 'prostagma? '
     file = None
 

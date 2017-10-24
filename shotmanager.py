@@ -1,6 +1,7 @@
 import field
 import shotfinder
 import util
+import random
 
 class ShotManager:
     def __init__(self, myfield):
@@ -35,8 +36,10 @@ class ShotManager:
     def printTable(self):
         shot_list = self.finder.find_shot()
         print(self.field.printTable(ShotManager.CoolPrinter(shot_list).print))
-        for shot in ShotManager._truncate_shots(shot_list):
-            print(shot.getHumanStr())
+        shot_list = ShotManager._truncate_shots(shot_list)
+        print(", ".join([coord.getHumanStr() for coord in shot_list]))
+        print("Random: " + random.sample(shot_list, 1)[0].getHumanStr())
+
 
 def main():
     mymanager = ShotManager(field.Field(util.Size(10, 10)))
