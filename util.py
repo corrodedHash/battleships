@@ -1,3 +1,4 @@
+import re 
 class Size:
     def __init__(self, width=0, height=0):
        self.width = width
@@ -20,9 +21,22 @@ class Size:
 
 
 class Coord:
-    def __init__(self, x=0, y=0):
-        self.x = x
-        self.y = y
+    def __init__(self, x=0, y=0, alphanum=None):
+        if alphanum is not None:
+            alphapart = re.search(r'\A[^\d]+', alphanum)
+            if not alphapart:
+                raise RuntimeError
+            self.y = fromAlpha(alphapart.group(0).upper())
+
+            numpart = re.search(r'\d+\Z', alphanum)
+            if not numpart:
+                raise RuntimeError
+            self.x = int(numpart.group(0)) - 1
+            assert self.x >= 0
+        else:
+            self.x = x
+            self.y = y
+
 
     def __getitem__(self, key):
         if key == 0:
@@ -59,6 +73,9 @@ class Coord:
     def __repr__(self):
         return self.__str__()
 
+    def getHumanStr(self):
+        return toAlpha(self.y) + str(self.x + 1) 
+
     def __deepcopy__(self, other):
         return Coord(self.x, self.y)
 
@@ -77,4 +94,27 @@ class Space:
 
     def __repr__(self):
         return "(" + str(self.top) + ", " + str(self.bottom) + ", " + str(self.left) + ", " + str(self.right) + ")"
+
+def toAlpha(number):
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    power = 0
+    max_num = number // len(alphabet)
+    while max_num > 0:
+        max_num = max_num // len(alphabet)
+        power += 1
+
+    result = ""
+    while power >= 0:
+        result += alphabet[number // (len(alphabet) ** power)]
+        power -= 1
+    return result
+
+def fromAlpha(number):
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    assert len(number) > 0
+    power = len(number) - 1
+    result = 0
+    for char in number:
+        result += alphabet.index(char) * (len(alphabet) ** power)
+    return result
 

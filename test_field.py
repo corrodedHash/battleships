@@ -10,3 +10,7 @@ class FieldTest(unittest.TestCase):
         self.assertEqual(mymargin.top, 5)
         self.assertEqual(mymargin.right, 4)
         self.assertEqual(mymargin.bottom, 4)
+
+    def test_asymBoard(self):
+        myfield = Field(Size(3, 2))
+

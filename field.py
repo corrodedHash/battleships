@@ -1,5 +1,5 @@
 import copy
-from util import Size, Coord, Space 
+from util import Size, Coord, Space, toAlpha 
 import itertools
 
 class Field:
@@ -11,7 +11,7 @@ class Field:
 
     @staticmethod
     def generateField(size: Size):
-        result = [[0 for _ in range(size.width)] for _ in range(size.height)]
+        result = [[0 for _ in range(size.height)] for _ in range(size.width)]
         return result
 
     def getWidth(self):
@@ -46,16 +46,14 @@ class Field:
 
     def printTable(self, char_fun=lambda board, x, y: board.cells[x][y]):
         result = "  "
-        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        assert self.size.height < len(alphabet)
         for x in range(len(self.cells)):
-            result += "| {:<2}".format(x) 
+            result += "| {:<2}".format(x + 1) 
         result += "\n--"
         for x in range(len(self.cells)):
             result += "+---" 
         result += "\n"
         for y in range(len(self.cells[0])):
-            result += "{0} ".format(alphabet[y])
+            result += "{0} ".format(toAlpha(y))
             for x in range(len(self.cells)):
                 result += "|{:^3}".format(char_fun(self, x, y)) 
             result += "\n--"
