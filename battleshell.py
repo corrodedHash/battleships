@@ -32,7 +32,14 @@ class BattleShell(cmd.Cmd):
         coord = self.parse_coord(arg)
         if coord is None:
             return
-        print(self.printer.finder.hunt_ship(coord))
+        try:
+            ship_parts = self.printer.finder.hunt_ship(coord)
+        except RuntimeError:
+            print("Error")
+            return
+
+        print(ship_parts)
+
 
     def do_init(self, arg):
         width, height = map(int, arg.split())

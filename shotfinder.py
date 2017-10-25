@@ -33,7 +33,8 @@ class ShotFinder:
                 new_point = new_point + direction
             return new_point
 
-        assert self.field[cell] == field.Field.States.hit 
+        if self.field[cell] != field.Field.States.hit:
+            raise RuntimeError
 
         vertical_ship = [0]
         horizontal_ship = [0]
@@ -54,26 +55,26 @@ class ShotFinder:
             raise RuntimeError
         elif vertical_ship is 1:
             ship_end_top = find_end((0, -1))
-            margin_top = self.field.getMargin(ship_end_top).top
+            margin_top = self.field.getMargins(ship_end_top).top
             if margin_top > 0:
-                result_list.append((ship_end_top, margin_top))
+                result_list.append((ship_end_top + (0, -1), margin_top))
 
             ship_end_bottom = find_end((0, 1))
-            margin_bottom = self.field.getMargin(ship_end_bottom).bottom
+            margin_bottom = self.field.getMargins(ship_end_bottom).bottom
             if margin_bottom > 0:
-                result_list.append((ship_end_bottom, margin_bottom))
+                result_list.append((ship_end_bottom + (0, 1), margin_bottom))
 
 
         elif horizontal_ship is 1:
             ship_end_left = find_end((-1, 0))
-            margin_left = self.field.getMargin(ship_end_left).left
+            margin_left = self.field.getMargins(ship_end_left).left
             if margin_left > 0:
-                result_list.append((ship_end_left, margin_left))
+                result_list.append((ship_end_left + (-1, 0), margin_left))
 
             ship_end_right = find_end((1, 0))
-            margin_right = self.field.getMargin(ship_end_right).right
+            margin_right = self.field.getMargins(ship_end_right).right
             if margin_right > 0:
-                result_list.append((ship_end_right, margin_right))
+                result_list.append((ship_end_right + (1, 0), margin_right))
 
         else: # Both 0
             margin = self.field.getMargins(cell)
