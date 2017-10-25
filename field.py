@@ -1,8 +1,16 @@
 import copy
-from util import Size, Coord, Space, toAlpha 
 import itertools
+from enum import Enum
+
+from util import Size, Coord, Space, toAlpha 
 
 class Field:
+    class States(Enum):
+        empty = 0
+        miss = 1
+        hit = 2
+        suspect = 3
+
     def __init__(self, size: Size):
         assert size.width > 0
         assert size.height > 0
@@ -11,21 +19,18 @@ class Field:
 
     @staticmethod
     def generateField(size: Size):
-        result = [[0 for _ in range(size.height)] for _ in range(size.width)]
+        result = [[Field.States.empty for _ in range(size.height)] for _ in range(size.width)]
         return result
 
     def getMargins(self, cell: Coord):
         tmp_result = list() 
-        if self.cells[cell.x][cell.y] != 0:
-            tmp_result = [0] * 4
-        else: 
-            for direction in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
-                count = 0
-                new_point = copy.deepcopy(cell) + direction
-                while new_point in self.size and self.cells[new_point.x][new_point.y] == 0:
-                    new_point = new_point + direction
-                    count += 1
-                tmp_result.append(count)
+        for direction in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
+            count = 0
+            new_point = copy.deepcopy(cell) + direction
+            while new_point in self.size and self[new_point] == Field.States.empty:
+                new_point = new_point + direction
+                count += 1
+            tmp_result.append(count)
         result = Space()
         result.left = tmp_result[0]
         result.top = tmp_result[1]
@@ -34,6 +39,19 @@ class Field:
          
         return result
     
+    def __getitem__(self, key):
+        if type(key) is Coord:
+            return self.cells[key.x][key.y]
+        else:
+            raise TypeError
+
+    def __setitem__(self, key, value):
+        if type(key) is Coord:
+            self.cells[key.x][key.y] = value
+        else:
+            raise TypeError
+
+
     def allCells(self):
         for x in range(self.size.width):
             for y in range(self.size.height):

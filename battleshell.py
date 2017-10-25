@@ -15,44 +15,55 @@ class BattleShell(cmd.Cmd):
         self.field = None
         self.manager = None
 
+    def parse_coord(self, coord):
+        try:
+            result = util.Coord(alphanum=coord)
+        except RuntimeError:
+            print("given index was probably not correct")
+            return None
+        if result not in self.field.size:
+            print("index out of range")
+            return None
+        return result
+
+
+
+    def do_hunt(self, arg):
+        coord = self.parse_coord(arg)
+        if coord is None:
+            return
+        print(self.manager.finder.hunt_ship(coord))
+
     def do_init(self, arg):
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.manager = battlemanager.battleManager(self.field)
+        self.manager = battlemanager.BattleManager(self.field)
 
-    def shoot(self, arg, char):
+    def shoot(self, arg, char: field.Field.States):
         for given_coord in arg.split():
-            try:
-                coord = util.Coord(alphanum=given_coord)
-            except RuntimeError:
-                print("given index was probably not correct")
+            coord = self.parse_coord(given_coord)
+            if coord is None:
                 continue
-
-            if coord not in self.field.size:
-                print("index out of range")
-                continue
-            if self.field.cells[coord.x][coord.y] == 0:
-                self.field.cells[coord.x][coord.y] = char 
+            if self.field[coord] == field.Field.States.empty:
+                self.field[coord] = char 
             else:
                 print("Cell not empty")
                 continue
 
     def do_suspect(self, arg):
-        self.shoot(arg, "~")
+        self.shoot(arg, field.Field.States.suspect)
 
     def do_hit(self, arg):
-        self.shoot(arg, "X")
+        self.shoot(arg, field.Field.States.hit)
 
     def do_miss(self, arg):
-        self.shoot(arg, "_")
+        self.shoot(arg, field.Field.States.miss)
 
     def do_reset(self, arg):
-        try:
-            coord = util.Coord(alphanum=arg)
-        except RuntimeError:
-            print("given index was probably not correct")
+        coord = self.parse_coord(arg)
+        if coord is None:
             return
-        self.field.cells[coord.x][coord.y] = 0 
+        self.field[coord] = field.Field.States.empty 
 
     def do_add(self, arg):
         try:

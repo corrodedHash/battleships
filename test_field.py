@@ -1,6 +1,7 @@
 import unittest
 
-from field import Field, Size, Coord, Space
+from field import Field
+from util import Size, Coord
 
 class FieldTest(unittest.TestCase):
     def test_margin(self):

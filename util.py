@@ -46,7 +46,7 @@ class Coord:
         else:
             raise KeyError
 
-    def __getitem__(self, key, value):
+    def __setitem__(self, key, value):
         assert value >= 0
         if key == 0:
             self.x = value

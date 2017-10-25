@@ -13,14 +13,20 @@ class BattleManager:
             self.shot_list = shot_list 
 
         def print(self, board, x, y):
-            if board.cells[x][y] == 0:
+            if board.cells[x][y] == field.Field.States.empty:
                 for coord, value in self.shot_list:
                     if coord.x == x and coord.y == y:
                         return value
                 else:
                     return ""
+            elif board.cells[x][y] == field.Field.States.hit:
+                return "X"
+            elif board.cells[x][y] == field.Field.States.miss:
+                return "_"
+            elif board.cells[x][y] == field.Field.States.suspect:
+                return "~"
             else:
-                return board.cells[x][y]
+                return "?"
 
     @staticmethod
     def _truncate_shots(shots):
@@ -34,9 +40,9 @@ class BattleManager:
         return sorted(best_list, key=lambda x: (x.y, x.x))
 
     def printTable(self):
-        shot_list = self.finder.find_shot()
-        print(self.field.printTable(ShotManager.CoolPrinter(shot_list).print))
-        shot_list = ShotManager._truncate_shots(shot_list)
+        shot_list = self.finder.sort_margin()
+        print(self.field.printTable(BattleManager.CoolPrinter(shot_list).print))
+        shot_list = BattleManager._truncate_shots(shot_list)
         print(", ".join([coord.getHumanStr() for coord in shot_list]))
         print("Random: " + random.sample(shot_list, 1)[0].getHumanStr())
 
