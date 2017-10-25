@@ -3,7 +3,7 @@ import shotfinder
 import util
 import random
 
-class ShotManager:
+class BattleManager:
     def __init__(self, myfield):
         self.field = myfield
         self.finder = shotfinder.ShotFinder(myfield)

@@ -1,7 +1,7 @@
 import cmd
 import os
 
-import shotmanager
+import battlemanager
 import field
 import util
 
@@ -18,7 +18,7 @@ class BattleShell(cmd.Cmd):
     def do_init(self, arg):
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.manager = shotmanager.ShotManager(self.field)
+        self.manager = battlemanager.battleManager(self.field)
 
     def shoot(self, arg, char):
         for given_coord in arg.split():

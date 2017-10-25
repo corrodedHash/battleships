@@ -14,11 +14,6 @@ class Field:
         result = [[0 for _ in range(size.height)] for _ in range(size.width)]
         return result
 
-    def getWidth(self):
-        return self.size.width
-    def getHeight(self):
-        return self.size.height
-
     def getMargins(self, cell: Coord):
         tmp_result = list() 
         if self.cells[cell.x][cell.y] != 0:
