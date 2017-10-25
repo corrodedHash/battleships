@@ -3,7 +3,7 @@ import shotfinder
 import util
 import random
 
-class BattleManager:
+class BattlePrinter:
     def __init__(self, myfield):
         self.field = myfield
         self.finder = shotfinder.ShotFinder(myfield)
@@ -41,16 +41,7 @@ class BattleManager:
 
     def printTable(self):
         shot_list = self.finder.sort_margin()
-        print(self.field.printTable(BattleManager.CoolPrinter(shot_list).print))
-        shot_list = BattleManager._truncate_shots(shot_list)
+        print(self.field.printTable(BattlePrinter.CoolPrinter(shot_list).print))
+        shot_list = BattlePrinter._truncate_shots(shot_list)
         print(", ".join([coord.getHumanStr() for coord in shot_list]))
         print("Random: " + random.sample(shot_list, 1)[0].getHumanStr())
-
-
-def main():
-    mymanager = ShotManager(field.Field(util.Size(10, 10)))
-    mymanager.printTable()
-    mymanager.field.cells[2][0] = "X" 
-    mymanager.field.cells[0][1] = "X" 
-    mymanager.field.cells[1][1] = "X" 
-    mymanager.printTable()

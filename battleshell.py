@@ -1,7 +1,7 @@
 import cmd
 import os
 
-import battlemanager
+import battleprinter
 import field
 import util
 
@@ -13,7 +13,7 @@ class BattleShell(cmd.Cmd):
     def __init__(self):
         super().__init__()
         self.field = None
-        self.manager = None
+        self.printer = None
 
     def parse_coord(self, coord):
         try:
@@ -32,12 +32,12 @@ class BattleShell(cmd.Cmd):
         coord = self.parse_coord(arg)
         if coord is None:
             return
-        print(self.manager.finder.hunt_ship(coord))
+        print(self.printer.finder.hunt_ship(coord))
 
     def do_init(self, arg):
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.manager = battlemanager.BattleManager(self.field)
+        self.printer = battleprinter.BattlePrinter(self.field)
 
     def shoot(self, arg, char: field.Field.States):
         for given_coord in arg.split():
@@ -68,26 +68,26 @@ class BattleShell(cmd.Cmd):
     def do_add(self, arg):
         try:
             count = int(arg)
-            self.manager.finder.shipcount[count] += 1
+            self.printer.finder.shipcount[count] += 1
         except ValueError:
             print("Not a number")
         except IndexError:
             print("Not a ship")
-        print(self.manager.finder.shipcount)
+        print(self.printer.finder.shipcount)
 
     def do_sink(self, arg):
         try:
             count = int(arg)
-            self.manager.finder.shipcount[count] -= 1
+            self.printer.finder.shipcount[count] -= 1
         except ValueError:
             print("Not a number")
         except IndexError:
             print("Not a ship")
-        print(self.manager.finder.shipcount)
+        print(self.printer.finder.shipcount)
     
     def postcmd(self, stop, line):
-        if self.manager is not None:
-            self.manager.printTable()
+        if self.printer is not None:
+            self.printer.printTable()
         return False
 
 
