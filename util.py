@@ -1,4 +1,6 @@
 import re 
+import enum
+from enum import Enum
 class Size:
     def __init__(self, width=0, height=0):
        self.width = width
@@ -81,19 +83,48 @@ class Coord:
 
 
 class Space:
-    def __init__(self):
-        self.top = 0
-        self.bottom = 0
-        self.left = 0
-        self.right = 0
+    class Direction(Enum):
+        top = enum.auto() 
+        bottom = enum.auto()
+        left = enum.auto() 
+        right = enum.auto() 
 
-    def getXLine(self):
-        return self.left + self.right + 1
-    def getYLine(self):
-        return self.top + self.bottom + 1
+
+    class Orientation(Enum):
+        unknown = enum.auto()
+        vertical = enum.auto() 
+        horizontal = enum.auto() 
+        both = enum.auto()
+
+        def __add__(self, other):
+            if self == Orientation.unknown:
+                print("hello")
+            else:
+                print("oops")
+            return self
+
+
+    tupleDirMap = {Space.Direction.top: (0, -1), 
+                   Space.Direction.bottom: (0, 1),
+                   Space.Direction.left: (-1, 0),
+                   Space.Direction.right: (1, 0)}
+    
+    dirOriMap = {Space.Direction.top: Space.Orientation.vertical, 
+                   Space.Direction.bottom: Space.Orientation.vertical,
+                   Space.Direction.left: Space.Orientation.horizontal,
+                   Space.Direction.right: Space.Orientation.horizontal}
+
+    def __init__(self):
+        self.values = dict()
+
+    def __getitem__(self, key: Space.Direction):
+        return self.values[key]
+
+    def __setitem__(self, key, value):
+        self.values[key] = value
 
     def __repr__(self):
-        return "(" + str(self.top) + ", " + str(self.bottom) + ", " + str(self.left) + ", " + str(self.right) + ")"
+        return str(self.values) 
 
 def toAlpha(number):
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

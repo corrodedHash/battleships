@@ -24,18 +24,15 @@ class Field:
 
     def getMargins(self, cell: Coord):
         tmp_result = list() 
-        for direction in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
-            count = 0
-            new_point = copy.deepcopy(cell) + direction
-            while new_point in self.size and self[new_point] == Field.States.empty:
-                new_point = new_point + direction
-                count += 1
-            tmp_result.append(count)
         result = Space()
-        result.left = tmp_result[0]
-        result.top = tmp_result[1]
-        result.right = tmp_result[2]
-        result.bottom = tmp_result[3]
+        for direction in Space.Direction:
+            dirTuple = Space.tupleDirMap[direction]
+            count = 0
+            new_point = copy.deepcopy(cell) + dirTuple
+            while new_point in self.size and self[new_point] == Field.States.empty:
+                new_point = new_point + dirTuple
+                count += 1
+            result[direction] = count
          
         return result
     

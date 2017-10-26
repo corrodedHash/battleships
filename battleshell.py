@@ -1,9 +1,10 @@
 import cmd
 import os
 
-import battleprinter
-import field
 import util
+import field
+import shotfinder
+import battleprinter
 
 class BattleShell(cmd.Cmd):
     intro = 'Welcome to the [b]4ttl3shell.   Type help or ? to list commands.\n'
@@ -13,6 +14,7 @@ class BattleShell(cmd.Cmd):
     def __init__(self):
         super().__init__()
         self.field = None
+        self.finder = None
         self.printer = None
 
     def parse_coord(self, coord):
@@ -44,7 +46,8 @@ class BattleShell(cmd.Cmd):
     def do_init(self, arg):
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.printer = battleprinter.BattlePrinter(self.field)
+        self.finder = shotfinder.ShotFinder(self.field)
+        self.printer = battleprinter.BattlePrinter(self.field, self.finder)
 
     def shoot(self, arg, char: field.Field.States):
         for given_coord in arg.split():

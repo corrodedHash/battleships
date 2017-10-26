@@ -2,11 +2,17 @@ import field
 import shotfinder
 import util
 import random
+import logging
 
 class BattlePrinter:
-    def __init__(self, myfield):
+    def __init__(self, myfield: field.Field, myfinder: shotfinder.ShotFinder = None):
         self.field = myfield
-        self.finder = shotfinder.ShotFinder(myfield)
+        if myfinder is None:
+            self.finder = shotfinder.ShotFinder(myfield)
+            logging.warning("Should initialize the battleprinter "
+                    "with custom shotfinder")
+        else:
+            self.finder = myfinder
 
     class CoolPrinter:
         def __init__(self, shot_list):

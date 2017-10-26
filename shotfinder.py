@@ -25,28 +25,25 @@ class ShotFinder:
         return sorted(result, key=lambda x: x[1])
 
     def hunt_ship(self, cell: util.Coord):
-        def find_end(direction):
+        def find_end(dirTuple):
             new_point = cell
-            while new_point + direction in self.field.size:
-                if self.field[new_point + direction] != field.Field.States.hit:
+            while new_point + dirTuple in self.field.size:
+                if self.field[new_point + dirTuple] != field.Field.States.hit:
                     return new_point
-                new_point = new_point + direction
+                new_point = new_point + dirTuple
             return new_point
 
         if self.field[cell] != field.Field.States.hit:
             raise RuntimeError
-
-        vertical_ship = [0]
-        horizontal_ship = [0]
-        vert_dir = [(0, -1), (0, 1)]
-        hor_dir = [(-1, 0), (1, 0)]
-        for orientation, directions in ([vertical_ship, vert_dir], [horizontal_ship, hor_dir]):
-            for direction in directions: 
-                new_cell = cell + direction
-                if new_cell in self.field.size:
-                    if self.field[new_cell] == field.Field.States.hit:
-                        orientation[0] = 1
-                        break
+        
+        ship_orientation = 
+        for direction in Space.Direction:
+            dirTuple = Space.tupleDirMap[direction]
+            new_cell = cell + dirTuple 
+            if new_cell in self.field.size:
+                if self.field[new_cell] == field.Field.States.hit:
+                    orientation[0] = 1
+                    break
 
         result_list = []
         vertical_ship = vertical_ship[0]
