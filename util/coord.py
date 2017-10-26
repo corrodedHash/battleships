@@ -1,5 +1,6 @@
-import re 
+import re
 from .alphanum import toAlpha, fromAlpha
+
 
 class Coord:
     def __init__(self, x=0, y=0, alphanum=None):
@@ -17,7 +18,6 @@ class Coord:
         else:
             self.x = x
             self.y = y
-
 
     def __getitem__(self, key):
         if key == 0:
@@ -40,13 +40,13 @@ class Coord:
         if type(other) is tuple:
             return Coord(self.x - other[0], self.y - other[1])
         else:
-            raise Error
+            raise RuntimeError
 
     def __add__(self, other):
         if type(other) is tuple:
             return Coord(self.x + other[0], self.y + other[1])
         else:
-            raise Error
+            raise RuntimeError
 
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
@@ -55,9 +55,7 @@ class Coord:
         return self.__str__()
 
     def getHumanStr(self):
-        return toAlpha(self.y) + str(self.x + 1) 
+        return toAlpha(self.y) + str(self.x + 1)
 
     def __deepcopy__(self, other):
         return Coord(self.x, self.y)
-
-

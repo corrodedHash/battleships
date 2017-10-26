@@ -3,6 +3,7 @@ import unittest
 from field import Field
 from util import Size, Coord, Space
 
+
 class FieldTest(unittest.TestCase):
     def test_margin(self):
         myfield = Field(Size(10, 10))
@@ -13,5 +14,4 @@ class FieldTest(unittest.TestCase):
         self.assertEqual(mymargin[Space.Direction.bottom], 4)
 
     def test_asymBoard(self):
-        myfield = Field(Size(3, 2))
-
+        myfield = Field(Size(3, 2)) # NOQA

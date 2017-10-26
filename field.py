@@ -33,7 +33,11 @@ class Field:
             dirTuple = Space.tupleDirMap[direction]
             count = 0
             new_point = copy.deepcopy(cell) + dirTuple
-            while new_point in self.size and self[new_point] == Field.States.empty:
+            while True:
+                if new_point not in self.size:
+                    break
+                if self[new_point] != Field.States.empty:
+                    break
                 new_point = new_point + dirTuple
                 count += 1
             result[direction] = count
@@ -54,11 +58,14 @@ class Field:
 
     def allCells(self):
         """Returns a generator to access all cells of the field"""
-        yield (Coord(x, y) for x in range(self.size.width) for y in range(self.size.height))
+        w_range = range(self.size.width)
+        h_range = range(self.size.height)
+        yield (Coord(x, y) for x in w_range for y in h_range)
 
     def printTable(self, char_fun=lambda board, x, y: board.cells[x][y]):
         result = "  "
-        result += "".join(["| {:<2}".format(x + 1) for x in range(len(self.cells))])
+        cell_range = range(len(self.cells))
+        result += "".join(["| {:<2}".format(x + 1) for x in cell_range])
         result += "\n--"
         result += "+---" * len(self.cells)
         result += "\n"

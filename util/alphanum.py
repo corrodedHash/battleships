@@ -13,6 +13,7 @@ def toAlpha(number):
         power -= 1
     return result
 
+
 def fromAlpha(number):
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     assert len(number) > 0
@@ -21,4 +22,3 @@ def fromAlpha(number):
     for char in number:
         result += alphabet.index(char) * (len(alphabet) ** power)
     return result
-

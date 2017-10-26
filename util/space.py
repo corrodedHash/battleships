@@ -1,18 +1,18 @@
 import enum
 from enum import Enum
 
+
 class Space:
     class Direction(Enum):
-        top = enum.auto() 
+        top = enum.auto()
         bottom = enum.auto()
-        left = enum.auto() 
-        right = enum.auto() 
-
+        left = enum.auto()
+        right = enum.auto()
 
     class Orientation(Enum):
         unknown = enum.auto()
-        vertical = enum.auto() 
-        horizontal = enum.auto() 
+        vertical = enum.auto()
+        horizontal = enum.auto()
         both = enum.auto()
 
         def __add__(self, other):
@@ -33,15 +33,12 @@ class Space:
 
             raise RuntimeError
 
-
-
-
-    tupleDirMap = {Direction.top: (0, -1), 
+    tupleDirMap = {Direction.top: (0, -1),
                    Direction.bottom: (0, 1),
                    Direction.left: (-1, 0),
                    Direction.right: (1, 0)}
-    
-    dirOriMap = {Direction.top: Orientation.vertical, 
+
+    dirOriMap = {Direction.top: Orientation.vertical,
                  Direction.bottom: Orientation.vertical,
                  Direction.left: Orientation.horizontal,
                  Direction.right: Orientation.horizontal}
@@ -56,4 +53,4 @@ class Space:
         self.values[key] = value
 
     def __repr__(self):
-        return str(self.values) 
+        return str(self.values)

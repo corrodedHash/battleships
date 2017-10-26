@@ -1,9 +1,10 @@
 from .coord import Coord
 
+
 class Size:
     def __init__(self, width=0, height=0):
-       self.width = width
-       self.height = height
+        self.width = width
+        self.height = height
 
     def __contains__(self, other):
         if type(other) is Coord:
