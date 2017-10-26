@@ -1,18 +1,21 @@
 import cmd
-import os
 
-import battleprinter
-import field
 import util
+import field
+import shotfinder
+import battleprinter
+
 
 class BattleShell(cmd.Cmd):
-    intro = 'Welcome to the [b]4ttl3shell.   Type help or ? to list commands.\n'
+    intro = "Welcome to the [b]4ttl3shell.   "
+    "Type help or ? to list commands.\n"
     prompt = 'prostagma? '
     file = None
 
     def __init__(self):
         super().__init__()
         self.field = None
+        self.finder = None
         self.printer = None
 
     def parse_coord(self, coord):
@@ -26,8 +29,6 @@ class BattleShell(cmd.Cmd):
             return None
         return result
 
-
-
     def do_hunt(self, arg):
         coord = self.parse_coord(arg)
         if coord is None:
@@ -40,11 +41,11 @@ class BattleShell(cmd.Cmd):
 
         print(ship_parts)
 
-
     def do_init(self, arg):
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.printer = battleprinter.BattlePrinter(self.field)
+        self.finder = shotfinder.ShotFinder(self.field)
+        self.printer = battleprinter.BattlePrinter(self.field, self.finder)
 
     def shoot(self, arg, char: field.Field.States):
         for given_coord in arg.split():
@@ -52,7 +53,7 @@ class BattleShell(cmd.Cmd):
             if coord is None:
                 continue
             if self.field[coord] == field.Field.States.empty:
-                self.field[coord] = char 
+                self.field[coord] = char
             else:
                 print("Cell not empty")
                 continue
@@ -70,7 +71,7 @@ class BattleShell(cmd.Cmd):
         coord = self.parse_coord(arg)
         if coord is None:
             return
-        self.field[coord] = field.Field.States.empty 
+        self.field[coord] = field.Field.States.empty
 
     def do_add(self, arg):
         try:
@@ -91,7 +92,7 @@ class BattleShell(cmd.Cmd):
         except IndexError:
             print("Not a ship")
         print(self.printer.finder.shipcount)
-    
+
     def postcmd(self, stop, line):
         if self.printer is not None:
             self.printer.printTable()

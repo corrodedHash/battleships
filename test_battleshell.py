@@ -3,6 +3,7 @@ import unittest
 import battleshell
 import field
 
+
 class BattleShellTest(unittest.TestCase):
     def test_standard(self):
         myshell = battleshell.BattleShell()
@@ -15,4 +16,3 @@ class BattleShellTest(unittest.TestCase):
         self.assertEqual(myshell.field.cells[3][1], field.Field.States.empty)
         myshell.do_reset("J9")
         self.assertEqual(myshell.field.cells[8][9], field.Field.States.empty)
-
