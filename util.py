@@ -25,7 +25,7 @@ class Size:
 class Coord:
     def __init__(self, x=0, y=0, alphanum=None):
         if alphanum is not None:
-            alphapart = re.search(r'\A[^\d]+', alphanum)
+            alphapart = re.search(r'\A[A-Z]+', alphanum.upper())
             if not alphapart:
                 raise RuntimeError
             self.y = fromAlpha(alphapart.group(0).upper())
@@ -97,27 +97,40 @@ class Space:
         both = enum.auto()
 
         def __add__(self, other):
-            if self == Orientation.unknown:
-                print("hello")
-            else:
-                print("oops")
-            return self
+            if self == other:
+                return self
+
+            if self == self.vertical and other == self.horizontal:
+                return self.both
+            if self == self.horizontal and other == self.vertical:
+                return self.both
+
+            if self == self.both or other == self.both:
+                return self.both
+            if self == self.unknown:
+                return other
+            if other == self.unknown:
+                return self
+
+            raise RuntimeError
 
 
-    tupleDirMap = {Space.Direction.top: (0, -1), 
-                   Space.Direction.bottom: (0, 1),
-                   Space.Direction.left: (-1, 0),
-                   Space.Direction.right: (1, 0)}
+
+
+    tupleDirMap = {Direction.top: (0, -1), 
+                   Direction.bottom: (0, 1),
+                   Direction.left: (-1, 0),
+                   Direction.right: (1, 0)}
     
-    dirOriMap = {Space.Direction.top: Space.Orientation.vertical, 
-                   Space.Direction.bottom: Space.Orientation.vertical,
-                   Space.Direction.left: Space.Orientation.horizontal,
-                   Space.Direction.right: Space.Orientation.horizontal}
+    dirOriMap = {Direction.top: Orientation.vertical, 
+                 Direction.bottom: Orientation.vertical,
+                 Direction.left: Orientation.horizontal,
+                 Direction.right: Orientation.horizontal}
 
     def __init__(self):
         self.values = dict()
 
-    def __getitem__(self, key: Space.Direction):
+    def __getitem__(self, key: Direction):
         return self.values[key]
 
     def __setitem__(self, key, value):
