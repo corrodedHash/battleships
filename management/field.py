@@ -17,7 +17,7 @@ class Field:
         suspect = enum.auto()
         intact = enum.auto()
 
-    def __init__(self, size: Size, shipcount = [0, 4, 3, 2, 1]):
+    def __init__(self, size: Size, shipcount=[0, 4, 3, 2, 1]):
         assert size.width > 0
         assert size.height > 0
         self.size = size
@@ -69,8 +69,15 @@ class Field:
         h_range = range(self.size.height)
         return (Coord(x, y) for x in w_range for y in h_range)
 
-    def print_table(self, char_fun=lambda board, x, y: board.cells[x][y]):
+    def print_table(self, char_fun=None):
         """Print the field"""
+        def standard_print(board, x, y):
+            enum_translation = {self.States.empty: " ", self.States.hit: "X",
+                                self.States.miss: "~", self.States.sunk: "#", 
+                                self.States.suspect: "v", self.States.intact: "O"}
+            return enum_translation[board[Coord(x, y)]]
+        if char_fun is None:
+            char_fun = standard_print
         result = "  "
         cell_range = range(len(self.cells))
         result += "".join(["| {:<2}".format(x + 1) for x in cell_range])
