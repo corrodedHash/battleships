@@ -1,7 +1,7 @@
 """Contains RandomBot class"""
 import random
 
-from util import Space
+from util import Space, Coord
 from management.field import Field
 
 from . import basebot as basebot
@@ -11,7 +11,27 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
     """Places ships randomly in field"""
     def __init__(self, own_field):
         basebot.BaseBotDefensive.__init__(self, own_field)
+        self.ships = []
+
         self._place_ships()
+
+    def get_shot(self, coord):
+        if self.own_field[coord] == Field.States.intact:
+            for ship in self.ships:
+                if coord in ship:
+                    ship.remove(coord)
+                    if not ship:
+                        self.own_field[coord] = Field.States.sunk
+                        self.ships = [s for s in self.ships if s]
+                        if not self.ships:
+                            return None
+                    else:
+                        self.own_field[coord] = Field.States.hit
+                    return self.own_field[coord]
+            else:
+                raise RuntimeError
+        else:
+            return basebot.BaseBotDefensive.get_shot(self, coord)
 
     def _place_ships(self):
         def _place_ship(shipsize):
@@ -52,9 +72,12 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
                             if self.own_field[cur_cell] != c_empt:
                                 continue
                         cur_cell = cell
+                        ship = []
                         for _ in range(shipsize):
+                            ship.append(Coord(cur_cell.x, cur_cell.y))
                             self.own_field[cur_cell] = Field.States.intact
                             cur_cell = cur_cell + dir_tuple
+                        self.ships.append(ship)
                         return
             raise RuntimeError
 
