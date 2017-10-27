@@ -8,6 +8,7 @@ from util import Coord
 
 class BaseBotOffensive:
     """Common interface for every attacking battleship AI"""
+
     def __init__(self, enemy_field: Field = None):
         self.enemy_field = enemy_field
 
@@ -15,8 +16,10 @@ class BaseBotOffensive:
         """Get next shot from this AI"""
         raise NotImplementedError
 
+
 class BaseBotDefensive:
     """Common interface for every receiving battleship AI"""
+
     def __init__(self, own_field: Field = None):
         self.own_field = own_field
 
@@ -30,6 +33,7 @@ class BaseBotDefensive:
             logging.warning("Hitting cell that was already shot at")
         return self.own_field[coord]
 
+
 class BaseBot(BaseBotOffensive, BaseBotDefensive):
     """Common interface for battleship AI that protec but also attac"""
 
@@ -37,5 +41,6 @@ class BaseBot(BaseBotOffensive, BaseBotDefensive):
         BaseBotOffensive.__init__(self, enemy_field)
         BaseBotDefensive.__init__(self, own_field)
 
-
-
+    def shoot(self) -> Coord:
+        """Get next shot from this AI"""
+        raise NotImplementedError

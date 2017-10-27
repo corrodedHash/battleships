@@ -26,7 +26,8 @@ class ShotFinder:
                 right = min(margin[util.Space.Direction.right], ship_size - 1)
                 possible_positions = max(0, left + right + 2 - ship_size)
                 possible_positions += max(0, top + bottom + 2 - ship_size)
-                total_pp += possible_positions * self.field.shipcount[ship_size - 1]
+                total_pp += possible_positions * \
+                    self.field.shipcount[ship_size - 1]
             result.append((cell, total_pp))
         return sorted(result, key=lambda x: x[1])
 

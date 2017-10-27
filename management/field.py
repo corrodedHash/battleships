@@ -17,9 +17,11 @@ class Field:
         suspect = enum.auto()
         intact = enum.auto()
 
-    def __init__(self, size: Size, shipcount=[0, 4, 3, 2, 1]):
+    def __init__(self, size: Size, shipcount=None):
         assert size.width > 0
         assert size.height > 0
+        if shipcount is None:
+            shipcount = [0, 4, 3, 2, 1]
         self.size = size
         self.shipcount = shipcount
         self.cells = Field.generate_field(self.size)
@@ -72,8 +74,9 @@ class Field:
     def print_table(self, char_fun=None):
         """Print the field"""
         def standard_print(board, x, y):
+            """Replace enum with char"""
             enum_translation = {self.States.empty: " ", self.States.hit: "X",
-                                self.States.miss: "~", self.States.sunk: "#", 
+                                self.States.miss: "~", self.States.sunk: "#",
                                 self.States.suspect: "v", self.States.intact: "O"}
             return enum_translation[board[Coord(x, y)]]
         if char_fun is None:

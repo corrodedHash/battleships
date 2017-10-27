@@ -13,13 +13,14 @@ class Space:
         right = enum.auto()
 
         def counter_clockwise(self):
+            """Rotate the current direction by 90 degrees ccw"""
             order = [self.top, self.right, self.bottom, self.left]
             return order[(order.index(self) - 1) % len(order)]
 
         def clockwise(self):
+            """Rotate the current direction by 90 degrees cw"""
             order = [self.top, self.right, self.bottom, self.left]
             return order[(order.index(self) + 1) % len(order)]
-
 
     class Orientation(Enum):
         """Possible 90 degree orientations"""
@@ -45,7 +46,6 @@ class Space:
                 return self
 
             raise RuntimeError
-
 
     tupleDirMap = {Direction.top: (0, -1),
                    Direction.bottom: (0, 1),
