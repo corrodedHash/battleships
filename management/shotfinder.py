@@ -8,7 +8,6 @@ class ShotFinder:
 
     def __init__(self, search_field):
         self.field = search_field
-        self.shipcount = [0, 4, 3, 2, 1]
 
     def sort_margin(self):
         """Returns a list of coords
@@ -19,7 +18,7 @@ class ShotFinder:
                 continue
             margin = self.field.get_margins(cell)
             total_pp = 0
-            for ship_size in range(1, len(self.shipcount) + 1):
+            for ship_size in range(1, len(self.field.shipcount) + 1):
                 top = min(margin[util.Space.Direction.top], ship_size - 1)
                 bottom = min(
                     margin[util.Space.Direction.bottom], ship_size - 1)
@@ -27,7 +26,7 @@ class ShotFinder:
                 right = min(margin[util.Space.Direction.right], ship_size - 1)
                 possible_positions = max(0, left + right + 2 - ship_size)
                 possible_positions += max(0, top + bottom + 2 - ship_size)
-                total_pp += possible_positions * self.shipcount[ship_size - 1]
+                total_pp += possible_positions * self.field.shipcount[ship_size - 1]
             result.append((cell, total_pp))
         return sorted(result, key=lambda x: x[1])
 

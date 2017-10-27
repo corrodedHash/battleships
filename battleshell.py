@@ -88,23 +88,23 @@ class BattleShell(cmd.Cmd):
         """Add a ship in of the given length"""
         try:
             count = int(arg)
-            self.printer.finder.shipcount[count] += 1
+            self.field.shipcount[count] += 1
         except ValueError:
             print("Not a number")
         except IndexError:
             print("Not a ship")
-        print(self.printer.finder.shipcount)
+        print(self.field.shipcount)
 
     def do_sink(self, arg):
         """Remove a ship of the given length"""
         try:
             count = int(arg)
-            self.printer.finder.shipcount[count] -= 1
+            self.field.shipcount[count] -= 1
         except ValueError:
             print("Not a number")
         except IndexError:
             print("Not a ship")
-        print(self.printer.finder.shipcount)
+        print(self.field.shipcount)
 
     def postcmd(self, stop, line):
         """Print table if the field is initialized"""

@@ -9,9 +9,9 @@ from util import Coord
 class BaseBot:
     """Common interface for every battleship AI"""
 
-    def __init__(self):
-        self.own_field = None
-        self.enemy_field = None
+    def __init__(self, own_field: Field = None, enemy_field: Field = None):
+        self.own_field = own_field
+        self.enemy_field = enemy_field
         self.shipcount = None
 
     def get_shot(self, coord: Coord) -> Field.States:

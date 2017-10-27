@@ -17,10 +17,11 @@ class Field:
         suspect = enum.auto()
         intact = enum.auto()
 
-    def __init__(self, size: Size):
+    def __init__(self, size: Size, shipcount = [0, 4, 3, 2, 1]):
         assert size.width > 0
         assert size.height > 0
         self.size = size
+        self.shipcount = shipcount
         self.cells = Field.generate_field(self.size)
 
     @staticmethod
