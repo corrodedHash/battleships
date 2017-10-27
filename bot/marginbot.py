@@ -18,5 +18,7 @@ class MarginBotOffensive(BaseBotOffensive):
     def shoot(self) -> Coord:
         """Get next coordiate to shoot"""
         shot_list = self.finder.sort_margin()
-        shot_list = [shot for shot in shot_list if shot[1] == shot_list[-1][1]]
-        return random.sample(shot_list, 1)[0]
+        shot_list = [shot[0] for shot in shot_list if shot[1] == shot_list[-1][1]]
+        coord_tuple = random.sample(shot_list, 1)[0]
+        print(coord_tuple)
+        return Coord(coord_tuple[0], coord_tuple[1])

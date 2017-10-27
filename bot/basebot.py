@@ -16,6 +16,10 @@ class BaseBotOffensive:
         """Get next shot from this AI"""
         raise NotImplementedError
 
+    def mark_hit(self, coord, state):
+        """Mark a cell"""
+        self.enemy_field[coord] = state
+
 
 class BaseBotDefensive:
     """Common interface for every receiving battleship AI"""
