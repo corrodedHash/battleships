@@ -1,3 +1,4 @@
+"""Contains BattleShell class"""
 import cmd
 
 import util
@@ -7,6 +8,7 @@ import management.battleprinter as battleprinter
 
 
 class BattleShell(cmd.Cmd):
+    """Shell to manually access the battlefield"""
     intro = "Welcome to the [b]4ttl3shell.   "
     "Type help or ? to list commands.\n"
     prompt = 'prostagma? '
@@ -18,7 +20,8 @@ class BattleShell(cmd.Cmd):
         self.finder = None
         self.printer = None
 
-    def parse_coord(self, coord):
+    def _parse_coord(self, coord):
+        """Helper function to parse an alphanumeric coord to Coord class"""
         try:
             result = util.Coord(alphanum=coord)
         except RuntimeError:
@@ -30,7 +33,9 @@ class BattleShell(cmd.Cmd):
         return result
 
     def do_hunt(self, arg):
-        coord = self.parse_coord(arg)
+        """Hunt the ship under the cursor,
+        giving possible further localtions"""
+        coord = self._parse_coord(arg)
         if coord is None:
             return
         try:
@@ -42,14 +47,16 @@ class BattleShell(cmd.Cmd):
         print(ship_parts)
 
     def do_init(self, arg):
+        """Initialize the field with the given 2 numbers width and height"""
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
         self.finder = shotfinder.ShotFinder(self.field)
         self.printer = battleprinter.BattlePrinter(self.field, self.finder)
 
-    def shoot(self, arg, char: field.Field.States):
+    def _shoot(self, arg, char: field.Field.States):
+        """Helper function to change a cell in the field"""
         for given_coord in arg.split():
-            coord = self.parse_coord(given_coord)
+            coord = self._parse_coord(given_coord)
             if coord is None:
                 continue
             if self.field[coord] == field.Field.States.empty:
@@ -59,21 +66,26 @@ class BattleShell(cmd.Cmd):
                 continue
 
     def do_suspect(self, arg):
-        self.shoot(arg, field.Field.States.suspect)
+        """Set a cell to have logically no ships in it"""
+        self._shoot(arg, field.Field.States.suspect)
 
     def do_hit(self, arg):
-        self.shoot(arg, field.Field.States.hit)
+        """Set a cell to be a hit ship"""
+        self._shoot(arg, field.Field.States.hit)
 
     def do_miss(self, arg):
-        self.shoot(arg, field.Field.States.miss)
+        """Set a cell to have no ship in it"""
+        self._shoot(arg, field.Field.States.miss)
 
     def do_reset(self, arg):
-        coord = self.parse_coord(arg)
+        """Reset a cell to unknown status"""
+        coord = self._parse_coord(arg)
         if coord is None:
             return
         self.field[coord] = field.Field.States.empty
 
     def do_add(self, arg):
+        """Add a ship in of the given length"""
         try:
             count = int(arg)
             self.printer.finder.shipcount[count] += 1
@@ -84,6 +96,7 @@ class BattleShell(cmd.Cmd):
         print(self.printer.finder.shipcount)
 
     def do_sink(self, arg):
+        """Remove a ship of the given length"""
         try:
             count = int(arg)
             self.printer.finder.shipcount[count] -= 1
@@ -94,8 +107,9 @@ class BattleShell(cmd.Cmd):
         print(self.printer.finder.shipcount)
 
     def postcmd(self, stop, line):
+        """Print table if the field is initialized"""
         if self.printer is not None:
-            self.printer.printTable()
+            self.printer.print_table()
         return False
 
 

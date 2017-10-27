@@ -1,5 +1,8 @@
+"""Contains functions to convert letter-coordiates to numerical coordinates"""
 
-def toAlpha(number):
+
+def to_alpha(number):
+    """Convert a number to letters"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     power = 0
     max_num = number // len(alphabet)
@@ -14,9 +17,10 @@ def toAlpha(number):
     return result
 
 
-def fromAlpha(number):
+def from_alpha(number):
+    """Convert letters to number"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    assert len(number) > 0
+    assert number
     power = len(number) - 1
     result = 0
     for char in number:

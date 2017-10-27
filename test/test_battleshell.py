@@ -1,3 +1,4 @@
+"""Contains BattleShellTest class"""
 import unittest
 
 import battleshell
@@ -5,7 +6,10 @@ from management import field
 
 
 class BattleShellTest(unittest.TestCase):
+    """Tests the battleshell module"""
+
     def test_standard(self):
+        """Just tries a few commands"""
         myshell = battleshell.BattleShell()
         myshell.do_init("10 10")
         myshell.do_hit("B4")

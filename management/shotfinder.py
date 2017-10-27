@@ -1,18 +1,23 @@
+"""Contains ShotFinder class"""
 import util
 from . import field
 
 
 class ShotFinder:
+    """Utilities to compute the next shot to make"""
+
     def __init__(self, search_field):
         self.field = search_field
         self.shipcount = [0, 4, 3, 2, 1]
 
     def sort_margin(self):
+        """Returns a list of coords
+        Sorted by the probabilities that a ship is in that coord"""
         result = list()
         for cell in self.field:
             if self.field[cell] != field.Field.States.empty:
                 continue
-            margin = self.field.getMargins(cell)
+            margin = self.field.get_margins(cell)
             total_pp = 0
             for ship_size in range(1, len(self.shipcount) + 1):
                 top = min(margin[util.Space.Direction.top], ship_size - 1)
@@ -27,12 +32,14 @@ class ShotFinder:
         return sorted(result, key=lambda x: x[1])
 
     def hunt_ship(self, cell: util.Coord):
-        def find_end(dirTuple):
+        """Return possible next coords for the ship on the given coord"""
+        def find_end(dir_tuple):
+            """Move in the given direction until hitting a un-hit cell"""
             new_point = cell
-            while new_point + dirTuple in self.field.size:
-                if self.field[new_point + dirTuple] != field.Field.States.hit:
+            while new_point + dir_tuple in self.field.size:
+                if self.field[new_point + dir_tuple] != field.Field.States.hit:
                     return new_point
-                new_point = new_point + dirTuple
+                new_point = new_point + dir_tuple
             return new_point
 
         if self.field[cell] != field.Field.States.hit:
@@ -40,8 +47,8 @@ class ShotFinder:
 
         ship_orientation = util.Space.Orientation.unknown
         for direction in util.Space.Direction:
-            dirTuple = util.Space.tupleDirMap[direction]
-            new_cell = cell + dirTuple
+            dir_tuple = util.Space.tupleDirMap[direction]
+            new_cell = cell + dir_tuple
             if new_cell in self.field.size:
                 if self.field[new_cell] == field.Field.States.hit:
                     ship_orientation = ship_orientation + \
@@ -51,7 +58,7 @@ class ShotFinder:
         if ship_orientation == util.Space.Orientation.both:
             raise RuntimeError
         elif ship_orientation == util.Space.Orientation.unknown:
-            margin = self.field.getMargins(cell)
+            margin = self.field.get_margins(cell)
             result_list.append(
                 (cell + (0, -1), margin[util.Space.Direction.top]))
             result_list.append(
@@ -65,11 +72,11 @@ class ShotFinder:
             directions = [key for key, value in util.Space.dirOriMap.items(
             ) if value == ship_orientation]
             for direction in directions:
-                dirTuple = util.Space.tupleDirMap[direction]
-                ship_end = find_end(dirTuple)
-                ship_margin = self.field.getMargins(ship_end)[direction]
+                dir_tuple = util.Space.tupleDirMap[direction]
+                ship_end = find_end(dir_tuple)
+                ship_margin = self.field.get_margins(ship_end)[direction]
                 if margin > 0:
-                    result_list.append((ship_end + dirTuple, ship_margin))
+                    result_list.append((ship_end + dir_tuple, ship_margin))
 
         result_list = sorted(result_list, key=lambda x: x[1])
         return result_list

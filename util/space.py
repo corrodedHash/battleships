@@ -1,15 +1,19 @@
+"""Contains Space class"""
 import enum
 from enum import Enum
 
 
 class Space:
+    """Specifies distances of a point in 4 directions"""
     class Direction(Enum):
+        """Possible directions in a checkered field"""
         top = enum.auto()
         bottom = enum.auto()
         left = enum.auto()
         right = enum.auto()
 
     class Orientation(Enum):
+        """Possible 90 degree orientations"""
         unknown = enum.auto()
         vertical = enum.auto()
         horizontal = enum.auto()

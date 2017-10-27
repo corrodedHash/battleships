@@ -1,14 +1,18 @@
+"""Contains Coord class"""
 import re
-from .alphanum import toAlpha, fromAlpha
+from .alphanum import to_alpha, from_alpha
 
 
 class Coord:
-    def __init__(self, x=0, y=0, alphanum=None):
+    """Contains coordinates of a point on a discrete 2D plane
+    and operations for those coordinates"""
+
+    def __init__(self, cell_x=0, cell_y=0, alphanum=None):
         if alphanum is not None:
             alphapart = re.search(r'\A[A-Z]+', alphanum.upper())
             if not alphapart:
                 raise RuntimeError
-            self.y = fromAlpha(alphapart.group(0).upper())
+            self.y = from_alpha(alphapart.group(0).upper())
 
             numpart = re.search(r'\d+\Z', alphanum)
             if not numpart:
@@ -16,8 +20,8 @@ class Coord:
             self.x = int(numpart.group(0)) - 1
             assert self.x >= 0
         else:
-            self.x = x
-            self.y = y
+            self.x = cell_x
+            self.y = cell_y
 
     def __getitem__(self, key):
         if key == 0:
@@ -37,13 +41,16 @@ class Coord:
             raise KeyError
 
     def __sub__(self, other):
-        if type(other) is tuple:
+        if isinstance(other, tuple):
             return Coord(self.x - other[0], self.y - other[1])
         else:
             raise RuntimeError
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
     def __add__(self, other):
-        if type(other) is tuple:
+        if isinstance(other, tuple):
             return Coord(self.x + other[0], self.y + other[1])
         else:
             raise RuntimeError
@@ -52,10 +59,7 @@ class Coord:
         return "(" + str(self.x) + ", " + str(self.y) + ")"
 
     def __repr__(self):
-        return self.__str__()
-
-    def getHumanStr(self):
-        return toAlpha(self.y) + str(self.x + 1)
+        return to_alpha(self.y) + str(self.x + 1)
 
     def __deepcopy__(self, other):
         return Coord(self.x, self.y)
