@@ -13,7 +13,9 @@ class Field:
         empty = enum.auto()
         miss = enum.auto()
         hit = enum.auto()
+        sunk = enum.auto()
         suspect = enum.auto()
+        intact = enum.auto()
 
     def __init__(self, size: Size):
         assert size.width > 0
