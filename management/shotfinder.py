@@ -1,5 +1,5 @@
 import util
-import field
+from . import field
 
 
 class ShotFinder:
@@ -9,7 +9,7 @@ class ShotFinder:
 
     def sort_margin(self):
         result = list()
-        for cell in self.field.allCells():
+        for cell in self.field:
             if self.field[cell] != field.Field.States.empty:
                 continue
             margin = self.field.getMargins(cell)

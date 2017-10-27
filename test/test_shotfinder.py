@@ -1,7 +1,7 @@
 import unittest
 
-from field import Field
-from shotfinder import ShotFinder
+from management.field import Field
+from management.shotfinder import ShotFinder
 from util import Size, Coord
 
 

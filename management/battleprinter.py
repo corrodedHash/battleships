@@ -1,7 +1,8 @@
-import field
-import shotfinder
 import random
 import logging
+
+from . import field
+from . import shotfinder
 
 
 class BattlePrinter:

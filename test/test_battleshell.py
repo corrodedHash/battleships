@@ -1,7 +1,7 @@
 import unittest
 
 import battleshell
-import field
+from management import field
 
 
 class BattleShellTest(unittest.TestCase):

@@ -1,9 +1,9 @@
 import cmd
 
 import util
-import field
-import shotfinder
-import battleprinter
+import management.field as field
+import management.shotfinder as shotfinder
+import management.battleprinter as battleprinter
 
 
 class BattleShell(cmd.Cmd):

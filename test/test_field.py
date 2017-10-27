@@ -1,6 +1,6 @@
 import unittest
 
-from field import Field
+from management.field import Field
 from util import Size, Coord, Space
 
 

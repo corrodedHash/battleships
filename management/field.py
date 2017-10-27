@@ -48,6 +48,7 @@ class Field:
         if isinstance(key, Coord):
             return self.cells[key.x][key.y]
         else:
+            print(type(key))
             raise TypeError
 
     def __setitem__(self, key, value):
@@ -56,11 +57,11 @@ class Field:
         else:
             raise TypeError
 
-    def allCells(self):
+    def __iter__(self):
         """Returns a generator to access all cells of the field"""
         w_range = range(self.size.width)
         h_range = range(self.size.height)
-        yield (Coord(x, y) for x in w_range for y in h_range)
+        return (Coord(x, y) for x in w_range for y in h_range)
 
     def printTable(self, char_fun=lambda board, x, y: board.cells[x][y]):
         result = "  "
