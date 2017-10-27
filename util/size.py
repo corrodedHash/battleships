@@ -20,6 +20,8 @@ class Size:
             assert other.x >= 0
             assert other.y >= 0
             return other.x < self.width and other.y < self.height
+        else:
+            raise TypeError
 
     def __leq__(self, other):
-        return not self.__leq__(other)
+        return not self.__gt__(other)
