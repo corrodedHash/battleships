@@ -1,5 +1,5 @@
 """Contains ShotFinder class"""
-from util import Space, Coord, Direction, Orientation, tupleDirMap, dirOriMap
+from util import Space, Coord, Direction, Orientation, DIRTUPLE_MAP, DIRORI_MAP
 from . import field
 
 
@@ -47,12 +47,12 @@ class ShotFinder:
 
         ship_orientation = Orientation.unknown
         for direction in Direction:
-            dir_tuple = tupleDirMap[direction]
+            dir_tuple = DIRTUPLE_MAP[direction]
             new_cell = cell + dir_tuple
             if new_cell in self.field.size:
                 if self.field[new_cell] == field.Field.States.hit:
                     ship_orientation = ship_orientation + \
-                        dirOriMap[direction]
+                        DIRORI_MAP[direction]
 
         result_list = []
         if ship_orientation == Orientation.both:
@@ -69,10 +69,10 @@ class ShotFinder:
                 (cell + (1, 0), margin[Direction.right]))
             result_list = [x for x in result_list if x[1] > 0]
         else:  # either horizontal or vertical
-            directions = [key for key, value in dirOriMap.items(
+            directions = [key for key, value in DIRORI_MAP.items(
             ) if value == ship_orientation]
             for direction in directions:
-                dir_tuple = tupleDirMap[direction]
+                dir_tuple = DIRTUPLE_MAP[direction]
                 ship_end = find_end(dir_tuple)
                 ship_margin = self.field.get_margins(ship_end)[direction]
                 if ship_margin > 0:

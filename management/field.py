@@ -4,7 +4,7 @@ import enum
 from enum import Enum
 import logging
 
-from util import Size, Coord, Space, to_alpha, Direction, tupleDirMap
+from util import Size, Coord, Space, to_alpha, Direction, DIRTUPLE_MAP
 
 
 class Field:
@@ -39,7 +39,7 @@ class Field:
         around the given coord"""
         result = Space()
         for direction in Direction:
-            dir_tuple = tupleDirMap[direction]
+            dir_tuple = DIRTUPLE_MAP[direction]
             count = 0
             new_point = copy.deepcopy(cell) + dir_tuple
             while True:

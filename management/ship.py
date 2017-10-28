@@ -1,7 +1,7 @@
 """Contains Ship class"""
 
 import itertools
-from util import Space, dirOriMap, tupleDirMap
+from util import Space, DIRORI_MAP, DIRTUPLE_MAP
 
 
 class Ship:
@@ -14,9 +14,9 @@ class Ship:
         """Return orientation given from the coordinates in cells"""
         if len(self.cells) < 2:
             return Orientation.unknown
-        for direction, dirtuple in tupleDirMap.items():
+        for direction, dirtuple in DIRTUPLE_MAP.items():
             if self.cells[0] + dirtuple in self.cells:
-                return dirOriMap[direction]
+                return DIRORI_MAP[direction]
         raise RuntimeError
 
     def possible_additions(self):
@@ -25,13 +25,13 @@ class Ship:
         if not self.cells:
             return 0
         if len(self.cells) == 1:
-            for _, dirtuple in tupleDirMap.items():
+            for _, dirtuple in DIRTUPLE_MAP.items():
                 yield self.cells[0] + dirtuple
         else:
-            possible_dir = dirOriMap.items()
+            possible_dir = DIRORI_MAP.items()
             possible_dir = [
                 d for d, o in possible_dir if o == self.orientation()]
-            possible_dir = [tupleDirMap[d] for d in possible_dir]
+            possible_dir = [DIRTUPLE_MAP[d] for d in possible_dir]
             for cell in self.cells:
                 for dirtuple in possible_dir:
                     if cell + dirtuple not in self.cells:
@@ -41,11 +41,11 @@ class Ship:
         """Get list of all cells that are next to the ship
         in the orientation of the ship"""
         if len(self.cells) >= 2:
-            possible_dir = dirOriMap.items()
+            possible_dir = DIRORI_MAP.items()
             possible_dir = [
                 d for d, o in possible_dir if o == self.orientation()]
             possible_dir = [d.clockwise() for d in possible_dir]
-            possible_dir = [tupleDirMap[d] for d in possible_dir]
+            possible_dir = [DIRTUPLE_MAP[d] for d in possible_dir]
             assert len(possible_dir) == 2
             for cell in self.cells:
                 for dirtuple in possible_dir:
