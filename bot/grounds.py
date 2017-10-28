@@ -11,6 +11,7 @@ class OneWayGround:
 
     def tick(self):
         """Make the attacker shoot once"""
+
         self.tick_count += 1
         next_shot = self.attacker.shoot()
         state = self.defender.get_shot(next_shot)

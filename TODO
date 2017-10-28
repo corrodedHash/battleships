@@ -1,4 +1,5 @@
 # Defender must notify once ship sunk
 # Defender must notice when all his ships sunk
-marginbot should hunt ships
-attacker should deduce which cells cannot be occupied
+# marginbot should hunt ships
+# attacker should deduce which cells cannot be occupied
+make randombot _place_ships prettier
