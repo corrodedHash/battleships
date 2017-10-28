@@ -1,5 +1,5 @@
 """Contains ShotFinder class"""
-from util import Space, Coord
+from util import Space, Coord, Direction, Orientation, tupleDirMap, dirOriMap
 from . import field
 
 
@@ -19,11 +19,11 @@ class ShotFinder:
             margin = self.field.get_margins(cell)
             total_pp = 0
             for ship_size in range(1, len(self.field.shipcount) + 1):
-                top = min(margin[Space.Direction.top], ship_size - 1)
+                top = min(margin[Direction.top], ship_size - 1)
                 bottom = min(
-                    margin[Space.Direction.bottom], ship_size - 1)
-                left = min(margin[Space.Direction.left], ship_size - 1)
-                right = min(margin[Space.Direction.right], ship_size - 1)
+                    margin[Direction.bottom], ship_size - 1)
+                left = min(margin[Direction.left], ship_size - 1)
+                right = min(margin[Direction.right], ship_size - 1)
                 possible_positions = max(0, left + right + 2 - ship_size)
                 possible_positions += max(0, top + bottom + 2 - ship_size)
                 total_pp += possible_positions * \
@@ -45,34 +45,34 @@ class ShotFinder:
         if self.field[cell] != field.Field.States.hit:
             raise RuntimeError
 
-        ship_orientation = Space.Orientation.unknown
-        for direction in Space.Direction:
-            dir_tuple = Space.tupleDirMap[direction]
+        ship_orientation = Orientation.unknown
+        for direction in Direction:
+            dir_tuple = tupleDirMap[direction]
             new_cell = cell + dir_tuple
             if new_cell in self.field.size:
                 if self.field[new_cell] == field.Field.States.hit:
                     ship_orientation = ship_orientation + \
-                        Space.dirOriMap[direction]
+                        dirOriMap[direction]
 
         result_list = []
-        if ship_orientation == Space.Orientation.both:
+        if ship_orientation == Orientation.both:
             raise RuntimeError
-        elif ship_orientation == Space.Orientation.unknown:
+        elif ship_orientation == Orientation.unknown:
             margin = self.field.get_margins(cell)
             result_list.append(
-                (cell + (0, -1), margin[Space.Direction.top]))
+                (cell + (0, -1), margin[Direction.top]))
             result_list.append(
-                (cell + (0, 1), margin[Space.Direction.bottom]))
+                (cell + (0, 1), margin[Direction.bottom]))
             result_list.append(
-                (cell + (-1, 0), margin[Space.Direction.left]))
+                (cell + (-1, 0), margin[Direction.left]))
             result_list.append(
-                (cell + (1, 0), margin[Space.Direction.right]))
+                (cell + (1, 0), margin[Direction.right]))
             result_list = [x for x in result_list if x[1] > 0]
         else:  # either horizontal or vertical
-            directions = [key for key, value in Space.dirOriMap.items(
+            directions = [key for key, value in dirOriMap.items(
             ) if value == ship_orientation]
             for direction in directions:
-                dir_tuple = Space.tupleDirMap[direction]
+                dir_tuple = tupleDirMap[direction]
                 ship_end = find_end(dir_tuple)
                 ship_margin = self.field.get_margins(ship_end)[direction]
                 if ship_margin > 0:

@@ -2,7 +2,8 @@
 import unittest
 
 from management.field import Field
-from util import Size, Coord, Space
+from util import Size, Coord, Direction
+
 
 
 class FieldTest(unittest.TestCase):
@@ -12,10 +13,10 @@ class FieldTest(unittest.TestCase):
         """Asserts that the margin is calculated correctly"""
         myfield = Field(Size(10, 10))
         mymargin = myfield.get_margins(Coord(5, 5))
-        self.assertEqual(mymargin[Space.Direction.left], 5)
-        self.assertEqual(mymargin[Space.Direction.top], 5)
-        self.assertEqual(mymargin[Space.Direction.right], 4)
-        self.assertEqual(mymargin[Space.Direction.bottom], 4)
+        self.assertEqual(mymargin[Direction.left], 5)
+        self.assertEqual(mymargin[Direction.top], 5)
+        self.assertEqual(mymargin[Direction.right], 4)
+        self.assertEqual(mymargin[Direction.bottom], 4)
 
     def test_asymmetric_board(self):
         """Checks if Field can handle non-square fields"""

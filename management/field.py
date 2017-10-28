@@ -4,7 +4,7 @@ import enum
 from enum import Enum
 import logging
 
-from util import Size, Coord, Space, to_alpha
+from util import Size, Coord, Space, to_alpha, Direction, tupleDirMap
 
 
 class Field:
@@ -38,8 +38,8 @@ class Field:
         """Return the amount of directly connecting unknown cells
         around the given coord"""
         result = Space()
-        for direction in Space.Direction:
-            dir_tuple = Space.tupleDirMap[direction]
+        for direction in Direction:
+            dir_tuple = tupleDirMap[direction]
             count = 0
             new_point = copy.deepcopy(cell) + dir_tuple
             while True:

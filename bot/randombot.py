@@ -1,7 +1,7 @@
 """Contains RandomBot class"""
 import random
 
-from util import Space
+from util import Space, Direction, tupleDirMap
 from management.field import Field
 from management.ship import Ship
 
@@ -38,12 +38,12 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
         def _place_ship(shipsize):
             shuffled_cells = list(self.own_field.__iter__())
             random.shuffle(shuffled_cells)
-            shuffled_direction = list(Space.Direction.__iter__())
+            shuffled_direction = list(Direction.__iter__())
             random.shuffle(shuffled_direction)
             for cell in shuffled_cells:
                 for direction in shuffled_direction:
                     try_ship = Ship()
-                    dir_tuple = Space.tupleDirMap[direction]
+                    dir_tuple = tupleDirMap[direction]
                     cur_cell = cell
                     for _ in range(shipsize):
                         if cur_cell not in self.own_field.size:

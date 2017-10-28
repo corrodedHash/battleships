@@ -46,14 +46,14 @@ class Coord:
         else:
             raise RuntimeError
 
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
-
     def __add__(self, other):
         if isinstance(other, tuple):
             return Coord(self.x + other[0], self.y + other[1])
         else:
             raise RuntimeError
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
 
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"

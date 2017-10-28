@@ -1,7 +1,7 @@
 """Contains Ship class"""
 
 import itertools
-from util import Space
+from util import Space, dirOriMap, tupleDirMap
 
 
 class Ship:
@@ -13,10 +13,10 @@ class Ship:
     def orientation(self):
         """Return orientation given from the coordinates in cells"""
         if len(self.cells) < 2:
-            return Space.Orientation.unknown
-        for direction, dirtuple in Space.tupleDirMap.items():
+            return Orientation.unknown
+        for direction, dirtuple in tupleDirMap.items():
             if self.cells[0] + dirtuple in self.cells:
-                return Space.dirOriMap[direction]
+                return dirOriMap[direction]
         raise RuntimeError
 
     def possible_additions(self):
@@ -25,13 +25,13 @@ class Ship:
         if not self.cells:
             return 0
         if len(self.cells) == 1:
-            for _, dirtuple in Space.tupleDirMap.items():
+            for _, dirtuple in tupleDirMap.items():
                 yield self.cells[0] + dirtuple
         else:
-            possible_dir = Space.dirOriMap.items()
+            possible_dir = dirOriMap.items()
             possible_dir = [
                 d for d, o in possible_dir if o == self.orientation()]
-            possible_dir = [Space.tupleDirMap[d] for d in possible_dir]
+            possible_dir = [tupleDirMap[d] for d in possible_dir]
             for cell in self.cells:
                 for dirtuple in possible_dir:
                     if cell + dirtuple not in self.cells:
@@ -41,11 +41,11 @@ class Ship:
         """Get list of all cells that are next to the ship
         in the orientation of the ship"""
         if len(self.cells) >= 2:
-            possible_dir = Space.dirOriMap.items()
+            possible_dir = dirOriMap.items()
             possible_dir = [
                 d for d, o in possible_dir if o == self.orientation()]
             possible_dir = [d.clockwise() for d in possible_dir]
-            possible_dir = [Space.tupleDirMap[d] for d in possible_dir]
+            possible_dir = [tupleDirMap[d] for d in possible_dir]
             assert len(possible_dir) == 2
             for cell in self.cells:
                 for dirtuple in possible_dir:
