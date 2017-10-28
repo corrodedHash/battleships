@@ -1,0 +1,35 @@
+import itertools
+
+from bot.basebot import BaseBotOffensive
+from management.field import Field
+from management.shotfinder import Ship
+
+class HuntingBotOffensive (BaseBotOffensive):
+    def __init__(self, enemy_field):
+        BaseBotOffensive.__init__(self, enemy_field)
+        self.open_hit = None
+
+    def mark_hit(self, coord, state):
+        self.enemy_field[coord] = state
+        if state == Field.States.hit:
+            if self.open_hit is None:
+                self.open_hit = Ship()
+                self.open_hit.cells.append(coord)
+            else:
+                assert coord in self.open_hit.possible_additions()
+                self.open_hit.cells.append(coord)
+                for sur in self.open_hit.get_parallel_sur():
+                    if sur in self.enemy_field.size:
+                        if self.enemy_field[sur] == Field.States.empty:
+                            self.enemy_field[sur] = Field.States.suspect
+        if state == Field.States.sunk:
+            assert coord in self.open_hit.possible_additions()
+            self.open_hit.cells.append(coord)
+            par_sur = self.open_hit.get_parallel_sur()
+            fe_sur = self.open_hit.get_front_end_sur()
+            surroundings = itertools.chain(par_sur, fe_sur)
+            for sur in surroundings:
+                if sur in self.enemy_field.size:
+                    if self.enemy_field[sur] == Field.States.empty:
+                        self.enemy_field[sur] = Field.States.suspect
+            self.open_hit = None

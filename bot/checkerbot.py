@@ -6,21 +6,20 @@ from management.shotfinder import ShotFinder
 from management.field import Field
 from util import Coord
 
-from .basebot import BaseBotOffensive
+from .huntingbot import HuntingBotOffensive
 
 
-class CheckerBotOffensive(BaseBotOffensive):
+class CheckerBotOffensive(HuntingBotOffensive):
     """Shoots to the cell with the statistically highest chance of a ship being there, while only hitting every second cell"""
 
     def __init__(self, enemy_field):
-        BaseBotOffensive.__init__(self, enemy_field)
+        HuntingBotOffensive.__init__(self, enemy_field)
         self.finder = ShotFinder(self.enemy_field)
-        self.open_hit = None 
 
     def shoot(self) -> Coord:
         """Get next coordiate to shoot"""
         if self.open_hit is not None:
-            shot_list = self.finder.hunt_ship(self.open_hit)
+            shot_list = self.finder.hunt_ship(self.open_hit.cells[0])
             shot_list = [shot[0] for shot in shot_list if shot[1] == shot_list[0][1]]
             coord_tuple = random.sample(shot_list, 1)[0]
         else:
@@ -31,10 +30,3 @@ class CheckerBotOffensive(BaseBotOffensive):
             else:
                 coord_tuple = improved_shot_list[0]
         return Coord(coord_tuple[0], coord_tuple[1])
-
-    def mark_hit(self, coord, state):
-        self.enemy_field[coord] = state
-        if state == Field.States.hit:
-            self.open_hit = coord
-        if state == Field.States.sunk:
-            self.open_hit = None
