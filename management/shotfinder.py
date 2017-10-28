@@ -29,7 +29,7 @@ class ShotFinder:
                 total_pp += possible_positions * \
                     self.field.shipcount[ship_size - 1]
             result.append((cell, total_pp))
-        return sorted(result, key=lambda x: x[1])
+        return sorted(result, key=lambda x: x[1], reverse=True)
 
     def hunt_ship(self, cell: util.Coord):
         """Return possible next coords for the ship on the given coord"""
@@ -75,8 +75,8 @@ class ShotFinder:
                 dir_tuple = util.Space.tupleDirMap[direction]
                 ship_end = find_end(dir_tuple)
                 ship_margin = self.field.get_margins(ship_end)[direction]
-                if margin > 0:
+                if ship_margin > 0:
                     result_list.append((ship_end + dir_tuple, ship_margin))
 
-        result_list = sorted(result_list, key=lambda x: x[1])
+        result_list = sorted(result_list, key=lambda x: x[1], reverse=True)
         return result_list

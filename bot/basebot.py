@@ -11,7 +11,6 @@ class BaseBotOffensive:
 
     def __init__(self, enemy_field: Field = None):
         self.enemy_field = enemy_field
-        self.open_hits = []
 
     def shoot(self) -> Coord:
         """Get next shot from this AI"""
@@ -20,10 +19,6 @@ class BaseBotOffensive:
     def mark_hit(self, coord, state):
         """Mark a cell"""
         self.enemy_field[coord] = state
-
-        if states == Field.States.hit:
-            pass
-            
 
 
 class BaseBotDefensive:

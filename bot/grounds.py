@@ -6,12 +6,17 @@ class OneWayGround:
     def __init__(self, attacker, defender):
         self.attacker = attacker
         self.defender = defender
+        self.tick_count = 0
 
     def tick(self):
+        self.tick_count += 1
         next_shot = self.attacker.shoot()
-        print(next_shot)
         state = self.defender.get_shot(next_shot)
+        if state == None:
+            #print("Won after {0} shots".format(self.tick_count))
+            return True
         self.attacker.mark_hit(next_shot, state)
+        return False
 
 class Grounds:
     """Interface for two battleship AIs to fight"""

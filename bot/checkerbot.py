@@ -1,4 +1,4 @@
-"""Contains MarginBot class"""
+"""Contains CheckerBot class"""
 
 import random
 
@@ -9,8 +9,8 @@ from util import Coord
 from .basebot import BaseBotOffensive
 
 
-class MarginBotOffensive(BaseBotOffensive):
-    """Shoots to the cell with the statistically highest chance of a ship being there"""
+class CheckerBotOffensive(BaseBotOffensive):
+    """Shoots to the cell with the statistically highest chance of a ship being there, while only hitting every second cell"""
 
     def __init__(self, enemy_field):
         BaseBotOffensive.__init__(self, enemy_field)
@@ -25,8 +25,11 @@ class MarginBotOffensive(BaseBotOffensive):
             coord_tuple = random.sample(shot_list, 1)[0]
         else:
             shot_list = self.finder.sort_margin()
-            shot_list = [shot[0] for shot in shot_list if shot[1] == shot_list[0][1]]
-            coord_tuple = random.sample(shot_list, 1)[0]
+            improved_shot_list = [shot[0] for shot in shot_list if shot[0].x % 2 == shot[0].y % 2]
+            if not improved_shot_list:
+                coord_tuple = shot_list[0]
+            else:
+                coord_tuple = improved_shot_list[0]
         return Coord(coord_tuple[0], coord_tuple[1])
 
     def mark_hit(self, coord, state):
