@@ -1,7 +1,57 @@
 """Contains ShotFinder class"""
 import util
+from util import Space
 from . import field
 
+class Ship:
+    def __init__(self):
+        self.cells = []
+
+    def orientation(self):
+        if len(self.cells) < 2:
+            return Space.Orientation.unknown
+        else:
+            for direction, dirtuple in Space.tupleDirMap.items():
+                if self.cells[0] + dirtuple in self.cells:
+                    return Space.dirOriMap[direction]
+            else:
+                raise RuntimeError
+
+    def possible_additions(self):
+        if not self.cells:
+            return 0
+        if len(self.cells) == 1:
+            for _, dirtuple in Space.tupleDirMap.items():
+                yield self.cells[0] + dirtuple
+        else:
+            possible_dir = [d for d, o in Space.dirOriMap.items() if o == self.orientation()]
+            possible_dir = [Space.tupleDirMap[d] for d in possible_dir]
+            for cell in self.cells:
+                for dirtuple in possible_dir:
+                    if cell + dirtuple not in self.cells:
+                        yield cell + dirtuple 
+
+    def get_parallel_sur(self):
+        if len(self.cells) >= 2:
+            possible_dir = [d for d, o in Space.dirOriMap.items() if o == self.orientation()]
+            possible_dir = [d.clockwise() for d in possible_dir]
+            possible_dir = [Space.tupleDirMap[d] for d in possible_dir]
+            assert len(possible_dir) == 2
+            for cell in self.cells:
+                for dirtuple in possible_dir:
+                    yield cell + dirtuple
+
+        else:
+            raise RuntimeError
+
+    def get_front_end_sur(self):
+        if len(self.cells) >= 2:
+            return self.possible_additions()
+        else:
+            raise RuntimeError
+
+    def __len__(self):
+        return len(self.cells)
 
 class ShotFinder:
     """Utilities to compute the next shot to make"""
@@ -19,11 +69,11 @@ class ShotFinder:
             margin = self.field.get_margins(cell)
             total_pp = 0
             for ship_size in range(1, len(self.field.shipcount) + 1):
-                top = min(margin[util.Space.Direction.top], ship_size - 1)
+                top = min(margin[Space.Direction.top], ship_size - 1)
                 bottom = min(
-                    margin[util.Space.Direction.bottom], ship_size - 1)
-                left = min(margin[util.Space.Direction.left], ship_size - 1)
-                right = min(margin[util.Space.Direction.right], ship_size - 1)
+                    margin[Space.Direction.bottom], ship_size - 1)
+                left = min(margin[Space.Direction.left], ship_size - 1)
+                right = min(margin[Space.Direction.right], ship_size - 1)
                 possible_positions = max(0, left + right + 2 - ship_size)
                 possible_positions += max(0, top + bottom + 2 - ship_size)
                 total_pp += possible_positions * \

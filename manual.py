@@ -31,11 +31,13 @@ def main():
     results = []
     for i in range(10):
         results.append(checker_bench())
+        print(results[-1])
 
-    print(results)
+    print(sorted(results))
     results = []
     for i in range(10):
         results.append(margin_bench())
+        print(results[-1])
 
-    print(results)
+    print(sorted(results))
 main()
