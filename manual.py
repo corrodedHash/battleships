@@ -4,6 +4,7 @@ import bot.randombot
 import bot.grounds
 from management.field import Field
 from util import Size
+import os
 
 def margin_bench():
     attacker = bot.marginbot.MarginBotOffensive(Field(Size(10, 10)))
@@ -21,9 +22,11 @@ def checker_bench():
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
     ground = bot.grounds.OneWayGround(attacker, defender)
     
+    os.system("clear")
     while not ground.tick():
-        #input()
-        #print(attacker.enemy_field.print_table())
+        #print("\033[1;1H")
+        print(attacker.enemy_field.print_table())
+        input()
         pass
     return ground.tick_count
 
@@ -40,4 +43,4 @@ def main():
         print(results[-1])
 
     print(sorted(results))
-main()
+checker_bench()

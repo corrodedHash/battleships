@@ -32,4 +32,6 @@ class HuntingBotOffensive (BaseBotOffensive):
                 if sur in self.enemy_field.size:
                     if self.enemy_field[sur] == Field.States.empty:
                         self.enemy_field[sur] = Field.States.suspect
+            self.enemy_field.shipcount[len(self.open_hit) - 1] -= 1
+            assert self.enemy_field.shipcount[len(self.open_hit) -1] >= 0
             self.open_hit = None
