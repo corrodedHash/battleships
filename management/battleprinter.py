@@ -44,7 +44,7 @@ class BattlePrinter:
 
     @staticmethod
     def _truncate_shots(shots):
-        best_list = [shot[0] for shot in shots if shot[1] == shots[-1][1]]
+        best_list = [shot[0] for shot in shots if shot[1] == shots[0][1]]
         return sorted(best_list, key=lambda x: (x.y, x.x))
 
     def print_table(self):
@@ -55,5 +55,6 @@ class BattlePrinter:
         result += self.field.print_table(cool_print)
         shot_list = BattlePrinter._truncate_shots(shot_list)
         result += ", ".join([repr(coord) for coord in shot_list])
+        result += "\n"
         result += "Random: " + repr(random.sample(shot_list, 1)[0])
         return result
