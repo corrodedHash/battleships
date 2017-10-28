@@ -29,9 +29,7 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
                     else:
                         self.own_field[coord] = Field.States.hit
                     return self.own_field[coord]
-                    break
-            else:
-                raise RuntimeError
+            raise RuntimeError
         else:
             return basebot.BaseBotDefensive.get_shot(self, coord)
 

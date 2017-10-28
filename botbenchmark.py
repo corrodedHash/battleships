@@ -1,13 +1,14 @@
+"""Contains random shit to benchmarks the bots"""
 import bot.marginbot
 import bot.checkerbot
 import bot.randombot
 import bot.grounds
 from management.field import Field
 from util import Size
-import os
 
 
 def margin_bench():
+    """Create a ground with a marginbot attacker and play"""
     attacker = bot.marginbot.MarginBotOffensive(Field(Size(10, 10)))
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
     ground = bot.grounds.OneWayGround(attacker, defender)
@@ -20,6 +21,7 @@ def margin_bench():
 
 
 def checker_bench():
+    """Create a ground with a checkerbot attacker and play"""
     attacker = bot.checkerbot.CheckerBotOffensive(Field(Size(10, 10)))
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
     ground = bot.grounds.OneWayGround(attacker, defender)
@@ -33,18 +35,18 @@ def checker_bench():
 
 
 def main():
+    """Run the benchmarks"""
     results = []
-    for i in range(10):
+    for _ in range(10):
         results.append(checker_bench())
         print(results[-1])
 
     print(sorted(results))
     results = []
-    for i in range(10):
+    for _ in range(10):
         results.append(margin_bench())
         print(results[-1])
 
     print(sorted(results))
-
 
 main()

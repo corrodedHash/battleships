@@ -20,4 +20,4 @@ class MarginBotOffensive(HuntingBotOffensive):
         shot_list = [shot[0]
                      for shot in shot_list if shot[1] == shot_list[0][1]]
         coord_tuple = random.sample(shot_list, 1)[0]
-        return Coord(coord_tuple[0], coord_tuple[1])
+        return coord_tuple
