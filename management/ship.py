@@ -1,6 +1,8 @@
 """Contains Ship class"""
 
+import itertools
 from util import Space
+
 
 class Ship:
     """Class to manage cellular ships"""
@@ -58,6 +60,11 @@ class Ship:
             return self.possible_additions()
         else:
             raise RuntimeError
+
+    def get_sur(self):
+        """Get all cells that surround this ship"""
+        return itertools.chain(self.get_front_end_sur(),
+                               self.get_parallel_sur())
 
     def __len__(self):
         return len(self.cells)
