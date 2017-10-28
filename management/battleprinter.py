@@ -26,7 +26,7 @@ class BattlePrinter:
         def __init__(self, shot_list):
             self.shot_list = shot_list
 
-        def print(self, board, cell_x, cell_y):
+        def get_char(self, board, cell_x, cell_y):
             """Convert enum to char"""
             current_cell = board.cells[cell_x][cell_y]
             if current_cell == field.Field.States.empty:
@@ -49,9 +49,11 @@ class BattlePrinter:
 
     def print_table(self):
         """Print the field"""
+        result = ""
         shot_list = self.finder.sort_margin()
-        cool_print = BattlePrinter.CoolPrinter(shot_list).print
-        print(self.field.print_table(cool_print))
+        cool_print = BattlePrinter.CoolPrinter(shot_list).get_char
+        result += self.field.print_table(cool_print)
         shot_list = BattlePrinter._truncate_shots(shot_list)
-        print(", ".join([repr(coord) for coord in shot_list]))
-        print("Random: " + repr(random.sample(shot_list, 1)[0]))
+        result += ", ".join([repr(coord) for coord in shot_list])
+        result += "Random: " + repr(random.sample(shot_list, 1)[0])
+        return result

@@ -24,7 +24,7 @@ def checker_bench():
     
     os.system("clear")
     while not ground.tick():
-        #print("\033[1;1H")
+        print("\033[1;1H")
         print(attacker.enemy_field.print_table())
         input()
         pass

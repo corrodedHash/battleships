@@ -2,6 +2,7 @@
 import copy
 import enum
 from enum import Enum
+import logging
 
 from util import Size, Coord, Space, to_alpha
 
@@ -56,7 +57,7 @@ class Field:
         if isinstance(key, Coord):
             return self.cells[key.x][key.y]
         else:
-            print(type(key))
+            logging.error(type(key))
             raise TypeError
 
     def __setitem__(self, key, value):

@@ -13,7 +13,6 @@ class OneWayGround:
         next_shot = self.attacker.shoot()
         state = self.defender.get_shot(next_shot)
         if state == None:
-            #print("Won after {0} shots".format(self.tick_count))
             return True
         self.attacker.mark_hit(next_shot, state)
         return False

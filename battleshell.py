@@ -109,7 +109,7 @@ class BattleShell(cmd.Cmd):
     def postcmd(self, stop, line):
         """Print table if the field is initialized"""
         if self.printer is not None:
-            self.printer.print_table()
+            print(self.printer.print_table())
         return False
 
 
