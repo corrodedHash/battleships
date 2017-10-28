@@ -4,7 +4,7 @@ import itertools
 
 from bot.basebot import BaseBotOffensive
 from management.field import Field
-from management.shotfinder import Ship
+from management.ship import Ship
 from util import Coord
 
 
