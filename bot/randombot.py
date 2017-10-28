@@ -9,6 +9,7 @@ from . import basebot as basebot
 
 class RandomBotDefensive(basebot.BaseBotDefensive):
     """Places ships randomly in field"""
+
     def __init__(self, own_field):
         basebot.BaseBotDefensive.__init__(self, own_field)
         self.ships = []
@@ -28,6 +29,7 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
                     else:
                         self.own_field[coord] = Field.States.hit
                     return self.own_field[coord]
+                    break
             else:
                 raise RuntimeError
         else:

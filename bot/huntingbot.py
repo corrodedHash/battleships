@@ -1,13 +1,30 @@
+"""Contains HuntingBot class"""
+import random
 import itertools
 
 from bot.basebot import BaseBotOffensive
 from management.field import Field
 from management.shotfinder import Ship
+from util import Coord
 
-class HuntingBotOffensive (BaseBotOffensive):
+
+class HuntingBotOffensive(BaseBotOffensive):
+    """Base class that hunts ships if they are found"""
+
     def __init__(self, enemy_field):
         BaseBotOffensive.__init__(self, enemy_field)
         self.open_hit = None
+
+    def shoot(self):
+        """Get next cell to shoot at"""
+        if self.open_hit is not None:
+            shot_list = self.finder.hunt_ship(self.open_hit.cells[0])
+            shot_list = [shot[0]
+                         for shot in shot_list if shot[1] == shot_list[0][1]]
+            coord_tuple = random.sample(shot_list, 1)[0]
+            return Coord(coord_tuple[0], coord_tuple[1])
+        else:
+            raise RuntimeError
 
     def mark_hit(self, coord, state):
         self.enemy_field[coord] = state
@@ -33,5 +50,5 @@ class HuntingBotOffensive (BaseBotOffensive):
                     if self.enemy_field[sur] == Field.States.empty:
                         self.enemy_field[sur] = Field.States.suspect
             self.enemy_field.shipcount[len(self.open_hit) - 1] -= 1
-            assert self.enemy_field.shipcount[len(self.open_hit) -1] >= 0
+            assert self.enemy_field.shipcount[len(self.open_hit) - 1] >= 0
             self.open_hit = None

@@ -78,7 +78,8 @@ class Field:
             """Replace enum with char"""
             enum_translation = {self.States.empty: " ", self.States.hit: "X",
                                 self.States.miss: "~", self.States.sunk: "#",
-                                self.States.suspect: "v", self.States.intact: "O"}
+                                self.States.suspect: "v",
+                                self.States.intact: "O"}
             return enum_translation[board[Coord(x, y)]]
         if char_fun is None:
             char_fun = standard_print
