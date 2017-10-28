@@ -24,11 +24,10 @@ def checker_bench():
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
     ground = bot.grounds.OneWayGround(attacker, defender)
 
-    os.system("clear")
     while not ground.tick():
-        print("\033[1;1H")
-        print(attacker.enemy_field.print_table())
-        input()
+        #print("\033[1;1H")
+        #print(attacker.enemy_field.print_table())
+        #input()
         pass
     return ground.tick_count
 
@@ -48,4 +47,4 @@ def main():
     print(sorted(results))
 
 
-checker_bench()
+main()
