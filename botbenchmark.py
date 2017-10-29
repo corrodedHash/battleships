@@ -27,26 +27,27 @@ def checker_bench():
     ground = bot.grounds.OneWayGround(attacker, defender)
 
     while not ground.tick():
-        print("\033[1;1H")
-        print(attacker.enemy_field.print_table())
-        input()
+        #print("\033[1;1H")
+        #print(attacker.enemy_field.print_table())
+        #input()
+        pass
     return ground.tick_count
 
 
 def main():
     """Run the benchmarks"""
     results = []
-    for _ in range(10):
+    for _ in range(20):
         results.append(checker_bench())
         print(results[-1])
 
     print(sorted(results))
     results = []
-    for _ in range(10):
+    for _ in range(20):
         results.append(margin_bench())
         print(results[-1])
 
     print(sorted(results))
 
 
-checker_bench()
+main()
