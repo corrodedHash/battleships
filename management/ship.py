@@ -1,7 +1,7 @@
 """Contains Ship class"""
 
 import itertools
-from util import Space, DIRORI_MAP, DIRTUPLE_MAP
+from util import Space, Coord, DIRORI_MAP, DIRTUPLE_MAP
 
 
 class Ship:
@@ -63,8 +63,38 @@ class Ship:
 
     def get_sur(self):
         """Get all cells that surround this ship"""
+        if len(self.cells) == 1:
+            return self.possible_additions()
         return itertools.chain(self.get_front_end_sur(),
                                self.get_parallel_sur())
 
+    def append(self, coord):
+        if not self.cells:
+            self.cells.append(coord)
+        elif len(self.cells) == 1:
+            if coord not in self.get_sur():
+                raise RuntimeError
+            self.cells.append(coord)
+        else:
+            if coord not in self.get_front_end_sur():
+                raise RuntimeError
+            self.cells.append(coord)
+
     def __len__(self):
         return len(self.cells)
+    
+    def __iter__(self):
+        return self.cells.__iter__()
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return self.cells[key]
+        else:
+            raise TypeError
+
+    def __setitem__(self, key, value: Coord):
+        if isinstance(key, int):
+            self.cells[key] = value
+        else:
+            raise TypeError
+
