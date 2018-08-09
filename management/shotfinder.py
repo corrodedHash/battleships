@@ -1,6 +1,7 @@
 """Contains ShotFinder class"""
 from util import Space, Coord, Direction, Orientation, DIRTUPLE_MAP, DIRORI_MAP
-from . import field
+import management.field as field
+from management.field import Field
 
 
 class ShotFinder:
@@ -31,52 +32,52 @@ class ShotFinder:
             result.append((cell, total_pp))
         return sorted(result, key=lambda x: x[1], reverse=True)
 
-    def hunt_ship(self, cell: Coord):
-        """Return possible next coords for the ship on the given coord"""
-        def find_end(dir_tuple):
-            """Move in the given direction until hitting a un-hit cell"""
-            new_point = cell
-            while new_point + dir_tuple in self.field.size:
-                if self.field[new_point + dir_tuple] != field.Field.States.hit:
-                    return new_point
-                new_point = new_point + dir_tuple
-            return new_point
+def hunt_ship(battlefield: Field, cell: Coord):
+    """Return possible next coords for the ship on the given coord"""
+    def find_end(dir_tuple):
+        """Move in the given direction until hitting a un-hit cell"""
+        new_point = cell
+        while new_point + dir_tuple in battlefield.size:
+            if battlefield[new_point + dir_tuple] != field.Field.States.hit:
+                return new_point
+            new_point = new_point + dir_tuple
+        return new_point
 
-        if self.field[cell] != field.Field.States.hit:
-            raise RuntimeError
+    if battlefield[cell] != field.Field.States.hit:
+        raise RuntimeError
 
-        ship_orientation = Orientation.unknown
-        for direction in Direction:
+    ship_orientation = Orientation.unknown
+    for direction in Direction:
+        dir_tuple = DIRTUPLE_MAP[direction]
+        new_cell = cell + dir_tuple
+        if new_cell in battlefield.size:
+            if battlefield[new_cell] == field.Field.States.hit:
+                ship_orientation = ship_orientation + \
+                    DIRORI_MAP[direction]
+
+    result_list = []
+    if ship_orientation == Orientation.both:
+        raise RuntimeError
+    elif ship_orientation == Orientation.unknown:
+        margin = battlefield.get_margins(cell)
+        result_list.append(
+            (cell + (0, -1), margin[Direction.top]))
+        result_list.append(
+            (cell + (0, 1), margin[Direction.bottom]))
+        result_list.append(
+            (cell + (-1, 0), margin[Direction.left]))
+        result_list.append(
+            (cell + (1, 0), margin[Direction.right]))
+        result_list = [x for x in result_list if x[1] > 0]
+    else:  # either horizontal or vertical
+        directions = [key for key, value in DIRORI_MAP.items(
+        ) if value == ship_orientation]
+        for direction in directions:
             dir_tuple = DIRTUPLE_MAP[direction]
-            new_cell = cell + dir_tuple
-            if new_cell in self.field.size:
-                if self.field[new_cell] == field.Field.States.hit:
-                    ship_orientation = ship_orientation + \
-                        DIRORI_MAP[direction]
+            ship_end = find_end(dir_tuple)
+            ship_margin = battlefield.get_margins(ship_end)[direction]
+            if ship_margin > 0:
+                result_list.append((ship_end + dir_tuple, ship_margin))
 
-        result_list = []
-        if ship_orientation == Orientation.both:
-            raise RuntimeError
-        elif ship_orientation == Orientation.unknown:
-            margin = self.field.get_margins(cell)
-            result_list.append(
-                (cell + (0, -1), margin[Direction.top]))
-            result_list.append(
-                (cell + (0, 1), margin[Direction.bottom]))
-            result_list.append(
-                (cell + (-1, 0), margin[Direction.left]))
-            result_list.append(
-                (cell + (1, 0), margin[Direction.right]))
-            result_list = [x for x in result_list if x[1] > 0]
-        else:  # either horizontal or vertical
-            directions = [key for key, value in DIRORI_MAP.items(
-            ) if value == ship_orientation]
-            for direction in directions:
-                dir_tuple = DIRTUPLE_MAP[direction]
-                ship_end = find_end(dir_tuple)
-                ship_margin = self.field.get_margins(ship_end)[direction]
-                if ship_margin > 0:
-                    result_list.append((ship_end + dir_tuple, ship_margin))
-
-        result_list = sorted(result_list, key=lambda x: x[1], reverse=True)
-        return result_list
+    result_list = sorted(result_list, key=lambda x: x[1], reverse=True)
+    return result_list

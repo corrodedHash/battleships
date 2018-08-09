@@ -6,6 +6,7 @@ from bot.basebot import BaseBotOffensive
 from management.field import Field
 from management.ship import Ship
 from util import Coord
+import management.shotfinder as shotfinder
 
 
 class HuntingBotOffensive(BaseBotOffensive):
@@ -18,7 +19,7 @@ class HuntingBotOffensive(BaseBotOffensive):
     def shoot(self):
         """Get next cell to shoot at"""
         if self.open_hit is not None:
-            shot_list = self.finder.hunt_ship(self.open_hit[0])
+            shot_list = shotfinder.hunt_ship(self.enemy_field, self.open_hit[0])
             shot_list = [shot[0]
                          for shot in shot_list if shot[1] == shot_list[0][1]]
             coord_tuple = random.sample(shot_list, 1)[0]

@@ -2,7 +2,7 @@
 import unittest
 
 from management.field import Field
-from management.shotfinder import ShotFinder
+import management.shotfinder as shotfinder 
 from util import Size, Coord
 
 
@@ -12,8 +12,7 @@ class ShotFinderTest(unittest.TestCase):
     def test_hunt_ship(self):
         """Check if hunt_ship crashes"""
         myfield = Field(Size(10, 10))
-        myfinder = ShotFinder(myfield)
 
         myfield[Coord(5, 5)] = Field.States.hit
-        possible_shipparts = myfinder.hunt_ship(Coord(5, 5))
+        possible_shipparts = shotfinder.hunt_ship(myfield, Coord(5, 5))
         self.assertTrue((Coord(5, 4), 5) in possible_shipparts)

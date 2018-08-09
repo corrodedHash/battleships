@@ -17,7 +17,6 @@ class BattleShell(cmd.Cmd):
     def __init__(self):
         super().__init__()
         self.field = None
-        self.finder = None
         self.printer = None
 
     def _parse_coord(self, coord):
@@ -39,7 +38,7 @@ class BattleShell(cmd.Cmd):
         if coord is None:
             return
         try:
-            ship_parts = self.printer.finder.hunt_ship(coord)
+            ship_parts = shotfinder.hunt_ship(coord)
         except RuntimeError:
             print("Error")
             return
