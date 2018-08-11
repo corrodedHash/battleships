@@ -1,7 +1,7 @@
 """Contains functions to convert letter-coordiates to numerical coordinates"""
 
 
-def to_alpha(number):
+def to_alpha(number: int) -> str:
     """Convert a number to letters"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     power = 0
@@ -17,7 +17,7 @@ def to_alpha(number):
     return result
 
 
-def from_alpha(number):
+def from_alpha(number: str) -> int:
     """Convert letters to number"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     assert number

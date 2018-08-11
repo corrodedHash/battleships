@@ -3,6 +3,7 @@ import cmd
 
 import util
 from management import field, shotfinder, battleprinter
+from typing import Optional
 
 
 class BattleShell(cmd.Cmd):
@@ -12,11 +13,11 @@ class BattleShell(cmd.Cmd):
     prompt = 'prostagma? '
     file = None
 
-    def __init__(self):
+    def __init__(self: 'BattleShell') -> None:
         super().__init__()
-        self.field = None
+        self.field: Optional[field.Field] = None
 
-    def _parse_coord(self, coord):
+    def _parse_coord(self: 'BattleShell', coord: str) -> Optional[util.Coord]:
         """Helper function to parse an alphanumeric coord to Coord class"""
         try:
             result = util.Coord(alphanum=coord)
@@ -28,14 +29,15 @@ class BattleShell(cmd.Cmd):
             return None
         return result
 
-    def do_hunt(self, arg):
+    def do_hunt(self: 'BattleShell', arg: str) -> None:
         """Hunt the ship under the cursor,
         giving possible further localtions"""
         coord = self._parse_coord(arg)
         if coord is None:
             return
         try:
-            ship_parts = shotfinder.hunt_ship(self.field, coord)
+            if self.field is not None:
+                ship_parts = shotfinder.hunt_ship(self.field, coord)
         except RuntimeError:
             print("Error")
             return
