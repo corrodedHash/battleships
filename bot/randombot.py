@@ -18,21 +18,22 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
         self._place_ships()
 
     def get_shot(self, coord):
-        if self.own_field[coord] == Field.States.intact:
-            for ship in self.ships:
-                if coord in ship:
-                    ship.remove(coord)
-                    if not ship:
-                        self.own_field[coord] = Field.States.sunk
-                        self.ships = [s for s in self.ships if s]
-                        if not self.ships:
-                            return None
-                    else:
-                        self.own_field[coord] = Field.States.hit
-                    return self.own_field[coord]
-            raise RuntimeError
-        else:
+        if self.own_field[coord] != Field.States.intact:
             return basebot.BaseBotDefensive.get_shot(self, coord)
+
+        for ship in self.ships:
+            if coord not in ship:
+                continue
+            ship.remove(coord)
+            if not ship:
+                self.own_field[coord] = Field.States.sunk
+                self.ships = [s for s in self.ships if s]
+                if not self.ships:
+                    return None
+            else:
+                self.own_field[coord] = Field.States.hit
+            return self.own_field[coord]
+        raise RuntimeError
 
     def _place_ships(self):
         def _place_ship(shipsize):

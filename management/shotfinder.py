@@ -33,7 +33,7 @@ def list_ship_probabilities(battlefield: Field):
             result.append((cell, get_ship_probability(battlefield, cell)))
         return sorted(result, key=lambda x: x[1], reverse=True)
 
-def find_ship_end(cell: Coord, battlefield: Coord, dir_tuple):
+def find_ship_end(battlefield: Field, cell: Coord, dir_tuple):
     """Move in the given direction until hitting a un-hit cell"""
     new_point = cell
     while new_point + dir_tuple in battlefield.size:
@@ -93,7 +93,7 @@ def hunt_ship(battlefield: Field, cell: Coord):
                 if value == ship_orientation]
         for direction in directions:
             dir_tuple = DIRTUPLE_MAP[direction]
-            ship_end = find_ship_end(cell, battlefield, dir_tuple)
+            ship_end = find_ship_end(battlefield, cell, dir_tuple)
             ship_margin = battlefield.get_margins(ship_end)[direction]
             if ship_margin > 0:
                 result_list.append((ship_end + dir_tuple, ship_margin))

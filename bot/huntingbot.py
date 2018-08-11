@@ -18,14 +18,14 @@ class HuntingBotOffensive(BaseBotOffensive):
 
     def shoot(self):
         """Get next cell to shoot at"""
-        if self.open_hit is not None:
-            shot_list = shotfinder.hunt_ship(self.enemy_field, self.open_hit[0])
-            shot_list = [shot[0]
-                         for shot in shot_list if shot[1] == shot_list[0][1]]
-            coord_tuple = random.sample(shot_list, 1)[0]
-            return Coord(coord_tuple.x, coord_tuple.y)
-        else:
-            raise RuntimeError
+        if self.open_hit is None:
+            raise NotImplementedError
+
+        shot_list = shotfinder.hunt_ship(self.enemy_field, self.open_hit[0])
+        shot_list = [shot[0]
+                     for shot in shot_list if shot[1] == shot_list[0][1]]
+        coord_tuple = random.sample(shot_list, 1)[0]
+        return Coord(coord_tuple.x, coord_tuple.y)
 
     def mark_hit(self, coord, state):
         self.enemy_field[coord] = state
@@ -40,7 +40,7 @@ class HuntingBotOffensive(BaseBotOffensive):
                     if sur in self.enemy_field.size:
                         if self.enemy_field[sur] == Field.States.empty:
                             self.enemy_field[sur] = Field.States.suspect
-        if state == Field.States.sunk:
+        elif state == Field.States.sunk:
             assert coord in self.open_hit.possible_additions()
             self.open_hit.append(coord)
             par_sur = self.open_hit.get_parallel_sur()
