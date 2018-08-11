@@ -2,9 +2,7 @@
 import cmd
 
 import util
-import management.field as field
-import management.shotfinder as shotfinder
-import management.battleprinter as battleprinter
+from management import field, shotfinder, battleprinter
 
 
 class BattleShell(cmd.Cmd):
@@ -17,7 +15,6 @@ class BattleShell(cmd.Cmd):
     def __init__(self):
         super().__init__()
         self.field = None
-        self.printer = None
 
     def _parse_coord(self, coord):
         """Helper function to parse an alphanumeric coord to Coord class"""
@@ -38,7 +35,7 @@ class BattleShell(cmd.Cmd):
         if coord is None:
             return
         try:
-            ship_parts = shotfinder.hunt_ship(coord)
+            ship_parts = shotfinder.hunt_ship(self.field, coord)
         except RuntimeError:
             print("Error")
             return
@@ -47,7 +44,12 @@ class BattleShell(cmd.Cmd):
 
     def do_init(self, arg):
         """Initialize the field with the given 2 numbers width and height"""
-        width, height = map(int, arg.split())
+        try:
+            width, height = map(int, arg.split())
+        except ValueError:
+            print("Cannot initialize")
+            return
+
         self.field = field.Field(util.Size(width, height))
 
     def _shoot(self, arg, char: field.Field.States):
@@ -105,8 +107,8 @@ class BattleShell(cmd.Cmd):
 
     def postcmd(self, stop, line):
         """Print table if the field is initialized"""
-        if self.printer is not None:
-            print(self.printer.print_table(self.field))
+        if self.field is not None:
+            print(battleprinter.print_table(self.field))
         return False
 
 

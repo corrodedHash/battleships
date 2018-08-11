@@ -85,8 +85,8 @@ class Field:
         if char_fun is None:
             char_fun = standard_print
         result = "  "
-        cell_range = range(len(self.cells))
-        result += "".join(["| {:<2}".format(x + 1) for x in cell_range])
+        top_bar = ["| {:<2}".format(x + 1) for x in range(len(self.cells))]
+        result += "".join(top_bar)
         result += "\n--"
         result += "+---" * len(self.cells)
         result += "\n"

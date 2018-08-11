@@ -35,7 +35,7 @@ def print_table(battlefield: field.Field):
 
     def cool_char_print(board, cell_x, cell_y): return get_char(
         board, shot_list, cell_x, cell_y)
-    result += battlefield.print_table(get_char)
+    result += battlefield.print_table(cool_char_print)
     shot_list = _truncate_shots(shot_list)
     result += ", ".join([repr(coord) for coord in shot_list])
     result += "\n"
