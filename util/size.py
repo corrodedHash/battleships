@@ -3,7 +3,7 @@ from .coord import Coord
 
 
 class Size:
-    """Contains size of a 2D Square object"""
+    """Contains size of a 2D rectangular object"""
 
     def __init__(self, width=0, height=0):
         self.width = width

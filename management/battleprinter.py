@@ -10,15 +10,8 @@ class BattlePrinter:
     """Prints a field neatly"""
 
     def __init__(self,
-                 myfield: field.Field,
-                 myfinder: shotfinder.ShotFinder = None):
+            myfield: field.Field):
         self.field = myfield
-        if myfinder is None:
-            self.finder = shotfinder.ShotFinder(myfield)
-            logging.warning("Should initialize the battleprinter "
-                            "with custom shotfinder")
-        else:
-            self.finder = myfinder
 
     class CoolPrinter:
         """Functor that converts cell-state enums to chars"""
@@ -50,7 +43,7 @@ class BattlePrinter:
     def print_table(self):
         """Print the field"""
         result = ""
-        shot_list = self.finder.sort_margin()
+        shot_list = shotfinder.list_ship_probabilities(self.field)
         cool_print = BattlePrinter.CoolPrinter(shot_list).get_char
         result += self.field.print_table(cool_print)
         shot_list = BattlePrinter._truncate_shots(shot_list)

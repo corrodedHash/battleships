@@ -4,7 +4,6 @@ and protecting variances"""
 import logging
 
 from management.field import Field
-from management.shotfinder import ShotFinder
 from util import Coord
 
 
@@ -13,7 +12,6 @@ class BaseBotOffensive:
 
     def __init__(self, enemy_field: Field = None):
         self.enemy_field = enemy_field
-        self.finder = ShotFinder(self.enemy_field)
 
     def shoot(self) -> Coord:
         """Get next shot from this AI"""

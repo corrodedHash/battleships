@@ -1,7 +1,7 @@
 """Contains RandomBot class"""
 import random
 
-from util import Space, Direction, DIRTUPLE_MAP
+from util import Direction, DIRTUPLE_MAP
 from management.field import Field
 from management.ship import Ship
 

@@ -3,6 +3,7 @@
 from util import Coord
 
 from .huntingbot import HuntingBotOffensive
+import management.shotfinder as shotfinder 
 
 
 class CheckerBotOffensive(HuntingBotOffensive):
@@ -14,7 +15,7 @@ class CheckerBotOffensive(HuntingBotOffensive):
         if self.open_hit is not None:
             return HuntingBotOffensive.shoot(self)
         else:
-            shot_list = self.finder.sort_margin()
+            shot_list = shotfinder.list_ship_probabilities(enemy_field)
             improved_shot_list = []
             for shot in shot_list:
                 if shot[0].x % 2 == shot[0].y % 2:

@@ -4,7 +4,7 @@ import enum
 from enum import Enum
 import logging
 
-from util import Size, Coord, Space, to_alpha, Direction, DIRTUPLE_MAP
+from util import Size, Coord, to_alpha, Direction, DIRTUPLE_MAP
 
 
 class Field:
@@ -35,9 +35,10 @@ class Field:
         return result
 
     def get_margins(self, cell: Coord):
-        """Return the amount of directly connecting unknown cells
-        around the given coord"""
-        result = Space()
+        """Returns dictionary keyed with directions. 
+        Contains the amount of unknown spaces from the cell to the next 
+        known cell."""
+        result = dict()
         for direction in Direction:
             dir_tuple = DIRTUPLE_MAP[direction]
             count = 0

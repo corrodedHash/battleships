@@ -49,8 +49,7 @@ class BattleShell(cmd.Cmd):
         """Initialize the field with the given 2 numbers width and height"""
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.finder = shotfinder.ShotFinder(self.field)
-        self.printer = battleprinter.BattlePrinter(self.field, self.finder)
+        self.printer = battleprinter.BattlePrinter(self.field)
 
     def _shoot(self, arg, char: field.Field.States):
         """Helper function to change a cell in the field"""

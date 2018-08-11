@@ -1,7 +1,7 @@
 """Contains Ship class"""
 
 import itertools
-from util import Space, Coord, DIRORI_MAP, DIRTUPLE_MAP
+from util import Coord, DIRORI_MAP, DIRTUPLE_MAP
 
 
 class Ship:
