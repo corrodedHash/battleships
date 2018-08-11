@@ -5,19 +5,20 @@ import logging
 
 from management.field import Field
 from util import Coord
+from typing import Optional
 
 
 class BaseBotOffensive:
     """Common interface for every attacking battleship AI"""
 
-    def __init__(self, enemy_field: Field = None):
+    def __init__(self, enemy_field: Field) -> None:
         self.enemy_field = enemy_field
 
     def shoot(self) -> Coord:
         """Get next shot from this AI"""
         raise NotImplementedError
 
-    def mark_hit(self, coord, state):
+    def mark_hit(self, coord: Coord, state: Field.States) -> None:
         """Mark a cell"""
         self.enemy_field[coord] = state
 
@@ -25,10 +26,10 @@ class BaseBotOffensive:
 class BaseBotDefensive:
     """Common interface for every receiving battleship AI"""
 
-    def __init__(self, own_field: Field = None):
-        self.own_field = own_field
+    def __init__(self, own_field: Field) -> None:
+        self.own_field: Field = own_field
 
-    def get_shot(self, coord: Coord) -> Field.States:
+    def get_shot(self, coord: Coord) -> Optional[Field.States]:
         """Shoot this AI"""
         if self.own_field[coord] == Field.States.intact:
             self.own_field[coord] = Field.States.hit
@@ -42,7 +43,7 @@ class BaseBotDefensive:
 class BaseBot(BaseBotOffensive, BaseBotDefensive):
     """Common interface for battleship AI that protec but also attac"""
 
-    def __init__(self, own_field: Field = None, enemy_field: Field = None):
+    def __init__(self, own_field: Field, enemy_field: Field) -> None:
         BaseBotOffensive.__init__(self, enemy_field)
         BaseBotDefensive.__init__(self, own_field)
 

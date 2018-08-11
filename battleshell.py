@@ -24,6 +24,9 @@ class BattleShell(cmd.Cmd):
         except RuntimeError:
             print("given index was probably not correct")
             return None
+        if self.field is None:
+            print("Field not yet initialized")
+            return None
         if result not in self.field.size:
             print("index out of range")
             return None
@@ -44,7 +47,7 @@ class BattleShell(cmd.Cmd):
 
         print(ship_parts)
 
-    def do_init(self, arg):
+    def do_init(self, arg: str) -> None:
         """Initialize the field with the given 2 numbers width and height"""
         try:
             width, height = map(int, arg.split())
@@ -54,8 +57,11 @@ class BattleShell(cmd.Cmd):
 
         self.field = field.Field(util.Size(width, height))
 
-    def _shoot(self, arg, char: field.Field.States):
+    def _shoot(self, arg: str, char: field.Field.States) -> None:
         """Helper function to change a cell in the field"""
+        if self.field is None:
+            print("Field is not yet initialized")
+            return
         for given_coord in arg.split():
             coord = self._parse_coord(given_coord)
             if coord is None:
@@ -66,27 +72,32 @@ class BattleShell(cmd.Cmd):
                 print("Cell not empty")
                 continue
 
-    def do_suspect(self, arg):
+    def do_suspect(self, arg: str) -> None:
         """Set a cell to have logically no ships in it"""
         self._shoot(arg, field.Field.States.suspect)
 
-    def do_hit(self, arg):
+    def do_hit(self, arg: str) -> None:
         """Set a cell to be a hit ship"""
         self._shoot(arg, field.Field.States.hit)
 
-    def do_miss(self, arg):
+    def do_miss(self, arg: str) -> None:
         """Set a cell to have no ship in it"""
         self._shoot(arg, field.Field.States.miss)
 
-    def do_reset(self, arg):
+    def do_reset(self, arg: str) -> None:
         """Reset a cell to unknown status"""
         coord = self._parse_coord(arg)
         if coord is None:
             return
+        if self.field is None:
+            return
         self.field[coord] = field.Field.States.empty
 
-    def do_add(self, arg):
+    def do_add(self, arg: str) -> None:
         """Add a ship in of the given length"""
+        if self.field is None:
+            return
+
         try:
             count = int(arg)
             self.field.shipcount[count] += 1
@@ -96,8 +107,10 @@ class BattleShell(cmd.Cmd):
             print("Not a ship")
         print(self.field.shipcount)
 
-    def do_sink(self, arg):
+    def do_sink(self, arg: str) -> None:
         """Remove a ship of the given length"""
+        if self.field is None:
+            return
         try:
             count = int(arg)
             self.field.shipcount[count] -= 1
@@ -107,7 +120,7 @@ class BattleShell(cmd.Cmd):
             print("Not a ship")
         print(self.field.shipcount)
 
-    def postcmd(self, stop, line):
+    def postcmd(self, stop: bool, line: str) -> bool:
         """Print table if the field is initialized"""
         if self.field is not None:
             print(battleprinter.print_table(self.field))

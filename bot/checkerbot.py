@@ -15,14 +15,14 @@ class CheckerBotOffensive(HuntingBotOffensive):
         if self.open_hit is not None:
             return HuntingBotOffensive.shoot(self)
 
-        shot_list = shotfinder.list_ship_probabilities(enemy_field)
+        shot_list = shotfinder.list_ship_probabilities(self.enemy_field)
         improved_shot_list = []
         for shot in shot_list:
             if shot[0].x % 2 == shot[0].y % 2:
                 improved_shot_list.append(shot[0])
 
         if not improved_shot_list:
-            coord_tuple = shot_list[0]
+            coord_tuple = shot_list[0][0]
         else:
             coord_tuple = improved_shot_list[0]
 

@@ -1,10 +1,12 @@
 """Contains field utilities"""
 from util import Coord, Direction, Orientation, DIRTUPLE_MAP, DIRORI_MAP
+from util.orientation import accumulate_orientation
 from management import field
 from management.field import Field
+from typing import List, Tuple
 import logging
 
-def get_ship_probability(battlefield: Field, cell: Coord):
+def get_ship_probability(battlefield: Field, cell: Coord) -> int:
     """Probability of a cell containing a ship"""
     if battlefield[cell] != field.Field.States.empty:
         logging.warning("Querying ship probability of known cell " + repr(cell))
@@ -23,7 +25,7 @@ def get_ship_probability(battlefield: Field, cell: Coord):
             battlefield.shipcount[ship_size - 1]
     return total_possible_positions
 
-def list_ship_probabilities(battlefield: Field):
+def list_ship_probabilities(battlefield: Field) -> List[Tuple[Coord, int]]:
         """Returns a list of coords
         Sorted by the probabilities that a ship is in that coord"""
         result = list()
@@ -33,7 +35,7 @@ def list_ship_probabilities(battlefield: Field):
             result.append((cell, get_ship_probability(battlefield, cell)))
         return sorted(result, key=lambda x: x[1], reverse=True)
 
-def find_ship_end(battlefield: Field, cell: Coord, dir_tuple):
+def find_ship_end(battlefield: Field, cell: Coord, dir_tuple: Tuple[int, int]) -> Coord:
     """Move in the given direction until hitting a un-hit cell"""
     new_point = cell
     while new_point + dir_tuple in battlefield.size:
@@ -42,7 +44,7 @@ def find_ship_end(battlefield: Field, cell: Coord, dir_tuple):
         new_point = new_point + dir_tuple
     return new_point
 
-def get_ship_orientation(battlefield: Field, cell: Coord):
+def get_ship_orientation(battlefield: Field, cell: Coord) -> Orientation:
     if battlefield[cell] != field.Field.States.hit:
         logging.warning("Querying ship orientation on un-hit cell " + repr(cell))
         raise RuntimeError
@@ -55,7 +57,7 @@ def get_ship_orientation(battlefield: Field, cell: Coord):
             continue
 
         if battlefield[new_cell] == field.Field.States.hit:
-            ship_orientation = ship_orientation + DIRORI_MAP[direction]
+            ship_orientation = accumulate_orientation(ship_orientation, DIRORI_MAP[direction])
 
     if ship_orientation == Orientation.both:
         logging.warning("Impossible ship configuration on " + repr(cell))
@@ -64,7 +66,7 @@ def get_ship_orientation(battlefield: Field, cell: Coord):
     return ship_orientation
 
 
-def hunt_ship(battlefield: Field, cell: Coord):
+def hunt_ship(battlefield: Field, cell: Coord) -> List[Tuple[Coord, int]]:
     """Return possible next coords for the ship on the given coord"""
 
     if battlefield[cell] != field.Field.States.hit:

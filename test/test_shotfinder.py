@@ -9,7 +9,7 @@ from util import Size, Coord
 class ShotFinderTest(unittest.TestCase):
     """Tests the shotfinder module"""
 
-    def test_hunt_ship(self):
+    def test_hunt_ship(self) -> None:
         """Check if hunt_ship crashes"""
         myfield = Field(Size(10, 10))
 

@@ -16,7 +16,7 @@ class MarginBotOffensive(HuntingBotOffensive):
             return HuntingBotOffensive.shoot(self)
 
         shot_list = shotfinder.list_ship_probabilities(self.enemy_field)
-        shot_list = [shot[0]
+        refined_shot_list = [shot[0]
                      for shot in shot_list if shot[1] == shot_list[0][1]]
-        coord = random.sample(shot_list, 1)[0]
+        coord = random.sample(refined_shot_list, 1)[0]
         return coord

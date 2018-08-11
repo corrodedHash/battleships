@@ -11,7 +11,7 @@ import bot.grounds
 class GroundsTest(unittest.TestCase):
     """Tests the bots in action"""
 
-    def test_random(self):
+    def test_random(self) -> None:
         """Check if random and margin are having a game"""
         attacker = bot.marginbot.MarginBotOffensive(Field(Size(10, 10)))
         defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))

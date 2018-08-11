@@ -1,26 +1,25 @@
 import enum
 
-class Orientation(enum.Enum):
-    """Possible 90 degree orientations"""
-    unknown = enum.auto()
-    vertical = enum.auto()
-    horizontal = enum.auto()
-    both = enum.auto()
+Orientation = enum.Enum('Orientation', 'unknown vertical horizontal both')
 
-    def __add__(self, other):
-        if self == other:
-            return self
+def accumulate_orientation(orione: Orientation, oritwo: Orientation) -> Orientation:
+    if orione == oritwo:
+        return orione 
 
-        if self == self.vertical and other == self.horizontal:
-            return self.both
-        if self == self.horizontal and other == self.vertical:
-            return self.both
+    if orione == orione.vertical and oritwo == orione.horizontal:
+        return Orientation.both
 
-        if self == self.both or other == self.both:
-            return self.both
-        if self == self.unknown:
-            return other
-        if other == self.unknown:
-            return self
+    if orione == orione.horizontal and oritwo == orione.vertical:
+        return Orientation.both
 
-        raise RuntimeError
+    if orione == orione.both or oritwo == orione.both:
+        return Orientation.both
+
+    if orione == orione.unknown:
+        return oritwo
+
+    if oritwo == orione.unknown:
+        return orione
+
+    raise RuntimeError
+

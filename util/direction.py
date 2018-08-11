@@ -1,18 +1,13 @@
 import enum
 
-class Direction(enum.Enum):
-    """Possible directions in a checkered field"""
-    top = enum.auto()
-    bottom = enum.auto()
-    left = enum.auto()
-    right = enum.auto()
+Direction = enum.Enum('Direction', 'top bottom left right')
 
-    def counter_clockwise(self):
-        """Rotate the current direction by 90 degrees ccw"""
-        order = [self.top, self.right, self.bottom, self.left]
-        return order[(order.index(self) - 1) % len(order)]
+def counter_clockwise(direction: Direction) -> Direction:
+    """Rotate the current direction by 90 degrees ccw"""
+    order = [Direction.top, Direction.right, Direction.bottom, Direction.left]
+    return order[(order.index(direction) - 1) % len(order)]
 
-    def clockwise(self):
-        """Rotate the current direction by 90 degrees cw"""
-        order = [self.top, self.right, self.bottom, self.left]
-        return order[(order.index(self) + 1) % len(order)]
+def clockwise(direction: Direction) -> Direction:
+    """Rotate the current direction by 90 degrees cw"""
+    order = [Direction.top, Direction.right, Direction.bottom, Direction.left]
+    return order[(order.index(direction) + 1) % len(order)]

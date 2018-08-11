@@ -1,15 +1,16 @@
 """Contains Grounds class"""
+from bot import basebot
 
 
 class OneWayGround:
     """Only has one atacker and one defender"""
 
-    def __init__(self, attacker, defender):
+    def __init__(self, attacker: basebot.BaseBotOffensive, defender: basebot.BaseBotDefensive) -> None:
         self.attacker = attacker
         self.defender = defender
-        self.tick_count = 0
+        self.tick_count: int = 0
 
-    def tick(self):
+    def tick(self) -> bool:
         """Make the attacker shoot once"""
 
         self.tick_count += 1
@@ -24,6 +25,6 @@ class OneWayGround:
 class Grounds:
     """Interface for two battleship AIs to fight"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.player1 = None
         self.player2 = None

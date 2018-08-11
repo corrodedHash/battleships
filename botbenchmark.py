@@ -7,7 +7,7 @@ from management.field import Field
 from util import Size
 
 
-def margin_bench():
+def margin_bench() -> int:
     """Create a ground with a marginbot attacker and play"""
     attacker = bot.marginbot.MarginBotOffensive(Field(Size(10, 10)))
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
@@ -20,7 +20,7 @@ def margin_bench():
     return ground.tick_count
 
 
-def checker_bench():
+def checker_bench() -> int:
     """Create a ground with a checkerbot attacker and play"""
     attacker = bot.checkerbot.CheckerBotOffensive(Field(Size(10, 10)))
     defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
@@ -34,7 +34,7 @@ def checker_bench():
     return ground.tick_count
 
 
-def main():
+def main() -> None:
     """Run the benchmarks"""
     results = []
     for _ in range(20):

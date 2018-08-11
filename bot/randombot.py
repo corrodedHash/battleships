@@ -4,20 +4,22 @@ import random
 from util import Direction, DIRTUPLE_MAP
 from management.field import Field
 from management.ship import Ship
+from util import Coord
 
 from . import basebot as basebot
+from typing import List, Optional
 
 
 class RandomBotDefensive(basebot.BaseBotDefensive):
     """Places ships randomly in field"""
 
-    def __init__(self, own_field):
+    def __init__(self, own_field: Field) -> None:
         basebot.BaseBotDefensive.__init__(self, own_field)
-        self.ships = []
+        self.ships: List[List[Coord]] = []
 
         self._place_ships()
 
-    def get_shot(self, coord):
+    def get_shot(self, coord: Coord) -> Optional[Field.States]:
         if self.own_field[coord] != Field.States.intact:
             return basebot.BaseBotDefensive.get_shot(self, coord)
 
@@ -35,8 +37,8 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
             return self.own_field[coord]
         raise RuntimeError
 
-    def _place_ships(self):
-        def _place_ship(shipsize):
+    def _place_ships(self) -> None:
+        def _place_ship(shipsize: int) -> None:
             shuffled_cells = list(self.own_field.__iter__())
             random.shuffle(shuffled_cells)
             shuffled_direction = list(Direction.__iter__())
