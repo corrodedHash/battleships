@@ -7,7 +7,7 @@ import logging
 def get_ship_probability(battlefield: Field, cell: Coord):
     """Probability of a cell containing a ship"""
     if battlefield[cell] != field.Field.States.empty:
-        logging.warning("Querying ship probability of known cell " + cell)
+        logging.warning("Querying ship probability of known cell " + str(cell))
         return 0
     margin = battlefield.get_margins(cell)
     total_possible_positions = 0
@@ -44,7 +44,7 @@ def find_ship_end(battlefield: Field, cell: Coord, dir_tuple):
 
 def get_ship_orientation(battlefield: Field, cell: Coord):
     if battlefield[cell] != field.Field.States.hit:
-        logging.warning("Querying ship orientation on un-hit cell " + cell)
+        logging.warning("Querying ship orientation on un-hit cell " + str(cell))
         raise RuntimeError
 
     ship_orientation = Orientation.unknown
@@ -58,7 +58,7 @@ def get_ship_orientation(battlefield: Field, cell: Coord):
             ship_orientation = ship_orientation + DIRORI_MAP[direction]
 
     if ship_orientation == Orientation.both:
-        logging.warning("Impossible ship configuration on " + cell)
+        logging.warning("Impossible ship configuration on " + str(cell))
         raise RuntimeError
 
     return ship_orientation
@@ -68,7 +68,7 @@ def hunt_ship(battlefield: Field, cell: Coord):
     """Return possible next coords for the ship on the given coord"""
 
     if battlefield[cell] != field.Field.States.hit:
-        logging.warning("Hunting ship on un-hit cell " + cell)
+        logging.warning("Hunting ship on un-hit cell " + str(cell))
         raise RuntimeError
 
     ship_orientation = get_ship_orientation(battlefield, cell) 

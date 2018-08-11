@@ -18,7 +18,7 @@ class Field:
         suspect = enum.auto()
         intact = enum.auto()
 
-    def __init__(self, size: Size, shipcount=None):
+    def __init__(self, size: Size, shipcount=None) -> None:
         assert size.width > 0
         assert size.height > 0
         if shipcount is None:
