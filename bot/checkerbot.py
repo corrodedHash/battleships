@@ -3,7 +3,7 @@
 from util import Coord
 
 from .huntingbot import HuntingBotOffensive
-import management.shotfinder as shotfinder 
+from management import shotfinder 
 
 
 class CheckerBotOffensive(HuntingBotOffensive):
@@ -20,8 +20,10 @@ class CheckerBotOffensive(HuntingBotOffensive):
         for shot in shot_list:
             if shot[0].x % 2 == shot[0].y % 2:
                 improved_shot_list.append(shot[0])
+
         if not improved_shot_list:
             coord_tuple = shot_list[0]
         else:
             coord_tuple = improved_shot_list[0]
+
         return Coord(coord_tuple[0], coord_tuple[1])

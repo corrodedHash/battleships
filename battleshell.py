@@ -49,7 +49,6 @@ class BattleShell(cmd.Cmd):
         """Initialize the field with the given 2 numbers width and height"""
         width, height = map(int, arg.split())
         self.field = field.Field(util.Size(width, height))
-        self.printer = battleprinter.BattlePrinter(self.field)
 
     def _shoot(self, arg, char: field.Field.States):
         """Helper function to change a cell in the field"""
@@ -107,7 +106,7 @@ class BattleShell(cmd.Cmd):
     def postcmd(self, stop, line):
         """Print table if the field is initialized"""
         if self.printer is not None:
-            print(self.printer.print_table())
+            print(self.printer.print_table(self.field))
         return False
 
 

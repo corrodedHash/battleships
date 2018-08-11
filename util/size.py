@@ -9,13 +9,13 @@ class Size:
         self.width = width
         self.height = height
 
-    def __contains__(self, other):
+    def __contains__(self, other: Coord):
         if isinstance(other, Coord):
             return other.x >= 0 and other.y >= 0 and self.__gt__(other)
         else:
             raise TypeError
 
-    def __gt__(self, other):
+    def __gt__(self, other: Coord):
         if isinstance(other, Coord):
             assert other.x >= 0
             assert other.y >= 0

@@ -3,7 +3,7 @@
 import random
 from util import Coord
 from .huntingbot import HuntingBotOffensive
-import management.shotfinder as shotfinder
+from management import shotfinder
 
 
 class MarginBotOffensive(HuntingBotOffensive):

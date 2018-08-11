@@ -6,48 +6,42 @@ from . import field
 from . import shotfinder
 
 
-class BattlePrinter:
-    """Prints a field neatly"""
+class CoolPrinter:
+    """Print functor for Field.print_table"""
+    def __init__(self, shot_list):
+        self.shot_list = shot_list
 
-    def __init__(self,
-            myfield: field.Field):
-        self.field = myfield
+    def get_char(board, shot_list, cell_x, cell_y):
+        """Convert enum to char"""
+        current_cell = board.cells[cell_x][cell_y]
+        if current_cell == field.Field.States.empty:
+            for coord, value in shot_list:
+                if coord.x == cell_x and coord.y == cell_y:
+                    return value
+            return ""
+        elif current_cell == field.Field.States.hit:
+            return "X"
+        elif current_cell == field.Field.States.miss:
+            return "_"
+        elif current_cell == field.Field.States.suspect:
+            return "~"
+        return "?"
 
-    class CoolPrinter:
-        """Functor that converts cell-state enums to chars"""
 
-        def __init__(self, shot_list):
-            self.shot_list = shot_list
+@staticmethod
+def _truncate_shots(shots):
+    best_list = [shot[0] for shot in shots if shot[1] == shots[0][1]]
+    return sorted(best_list, key=lambda x: (x.y, x.x))
 
-        def get_char(self, board, cell_x, cell_y):
-            """Convert enum to char"""
-            current_cell = board.cells[cell_x][cell_y]
-            if current_cell == field.Field.States.empty:
-                for coord, value in self.shot_list:
-                    if coord.x == cell_x and coord.y == cell_y:
-                        return value
-                return ""
-            elif current_cell == field.Field.States.hit:
-                return "X"
-            elif current_cell == field.Field.States.miss:
-                return "_"
-            elif current_cell == field.Field.States.suspect:
-                return "~"
-            return "?"
 
-    @staticmethod
-    def _truncate_shots(shots):
-        best_list = [shot[0] for shot in shots if shot[1] == shots[0][1]]
-        return sorted(best_list, key=lambda x: (x.y, x.x))
-
-    def print_table(self):
-        """Print the field"""
-        result = ""
-        shot_list = shotfinder.list_ship_probabilities(self.field)
-        cool_print = BattlePrinter.CoolPrinter(shot_list).get_char
-        result += self.field.print_table(cool_print)
-        shot_list = BattlePrinter._truncate_shots(shot_list)
-        result += ", ".join([repr(coord) for coord in shot_list])
-        result += "\n"
-        result += "Random: " + repr(random.sample(shot_list, 1)[0])
-        return result
+def print_table(battlefield: field.Field):
+    """Print the field"""
+    result = ""
+    shot_list = shotfinder.list_ship_probabilities(battlefield)
+    cool_char_print = lambda board, cell_x, cell_y: get_char(board, shot_list, cell_x, cell_y)
+    result += battlefield.print_table(get_char)
+    shot_list = BattlePrinter._truncate_shots(shot_list)
+    result += ", ".join([repr(coord) for coord in shot_list])
+    result += "\n"
+    result += "Random: " + repr(random.sample(shot_list, 1)[0])
+    return result
