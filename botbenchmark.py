@@ -1,53 +1,33 @@
 """Contains random shit to benchmarks the bots"""
-import bot.marginbot
-import bot.checkerbot
-import bot.randombot
-import bot.grounds
+from bot import MarginBotOffensive, CheckerBotOffensive, RandomBotDefensive, OneWayGround, BaseBotOffensive
 from management.field import Field
 from util import Size
+from typing import Type
 
 
-def margin_bench() -> int:
+def benchbot(OffensiveBotClass: Type[BaseBotOffensive]) -> int:
     """Create a ground with a marginbot attacker and play"""
-    attacker = bot.marginbot.MarginBotOffensive(Field(Size(10, 10)))
-    defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
-    ground = bot.grounds.OneWayGround(attacker, defender)
+    attacker = OffensiveBotClass(Field(Size(10, 10)))
+    defender = RandomBotDefensive(Field(Size(10, 10)))
+    ground = OneWayGround(attacker, defender)
 
     while not ground.tick():
-        # input()
-        # print(attacker.enemy_field.print_table())
-        pass
-    return ground.tick_count
-
-
-def checker_bench() -> int:
-    """Create a ground with a checkerbot attacker and play"""
-    attacker = bot.checkerbot.CheckerBotOffensive(Field(Size(10, 10)))
-    defender = bot.randombot.RandomBotDefensive(Field(Size(10, 10)))
-    ground = bot.grounds.OneWayGround(attacker, defender)
-
-    while not ground.tick():
-        #print("\033[1;1H")
-        #print(attacker.enemy_field.print_table())
-        #input()
         pass
     return ground.tick_count
 
 
 def main() -> None:
     """Run the benchmarks"""
-    results = []
-    for _ in range(20):
-        results.append(checker_bench())
-        print(results[-1])
-
-    print(sorted(results))
-    results = []
-    for _ in range(20):
-        results.append(margin_bench())
-        print(results[-1])
-
-    print(sorted(results))
+    for BotClass in (CheckerBotOffensive, MarginBotOffensive):
+        results = []
+        print(BotClass.__name__)
+        print("[", end="")
+        for _ in range(20):
+            results.append(benchbot(BotClass))
+            print(str(results[-1]) + ", ", end="", flush=True)
+        print()
+        print(sorted(results))
 
 
-main()
+if __name__ == "__main__":
+    main()
