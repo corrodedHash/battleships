@@ -1,10 +1,10 @@
 """Contains BattlePrinter class"""
 import random
 import logging
+from typing import Union, List, Tuple, Iterable
 
 from . import field
 from . import shotfinder
-from typing import Union, List, Tuple, Iterable
 from util import Coord
 
 

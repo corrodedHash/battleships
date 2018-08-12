@@ -9,19 +9,19 @@ def accumulate_orientation(
     if orione == oritwo:
         return orione
 
-    if orione == orione.vertical and oritwo == orione.horizontal:
+    if orione == Orientation.vertical and oritwo == Orientation.horizontal:
         return Orientation.both
 
-    if orione == orione.horizontal and oritwo == orione.vertical:
+    if orione == Orientation.horizontal and oritwo == Orientation.vertical:
         return Orientation.both
 
-    if orione == orione.both or oritwo == orione.both:
+    if orione == Orientation.both or oritwo == Orientation.both:
         return Orientation.both
 
-    if orione == orione.unknown:
+    if orione == Orientation.unknown:
         return oritwo
 
-    if oritwo == orione.unknown:
+    if oritwo == Orientation.unknown:
         return orione
 
     raise RuntimeError
