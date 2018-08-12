@@ -8,7 +8,12 @@ from typing import Union, List, Tuple, Iterable
 from util import Coord
 
 
-def get_char(board: field.Field, shot_list: List[Tuple[Coord, int]], cell_x: int, cell_y: int) -> Union[str, int]:
+def get_char(board: field.Field,
+             shot_list: List[Tuple[Coord,
+                                   int]],
+             cell_x: int,
+             cell_y: int) -> Union[str,
+                                   int]:
     """Convert enum to char"""
     current_cell = board.cells[cell_x][cell_y]
     if current_cell == field.Field.States.empty:
@@ -35,8 +40,13 @@ def print_table(battlefield: field.Field) -> str:
     result = ""
     shot_list = shotfinder.list_ship_probabilities(battlefield)
 
-    def cool_char_print(board: field.Field, cell_x: int, cell_y: int) -> str: return str(get_char(
-        board, shot_list, cell_x, cell_y))
+    def cool_char_print(board: field.Field,
+                        cell_x: int,
+                        cell_y: int) -> str:
+        return str(get_char(board,
+                            shot_list,
+                            cell_x,
+                            cell_y))
     result += battlefield.print_table(cool_char_print)
     refined_shot_list = list(_truncate_shots(shot_list))
     result += ", ".join([repr(coord) for coord in refined_shot_list])

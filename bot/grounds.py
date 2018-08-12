@@ -5,7 +5,8 @@ from bot import basebot
 class OneWayGround:
     """Only has one atacker and one defender"""
 
-    def __init__(self, attacker: basebot.BaseBotOffensive, defender: basebot.BaseBotDefensive) -> None:
+    def __init__(self, attacker: basebot.BaseBotOffensive,
+                 defender: basebot.BaseBotDefensive) -> None:
         self.attacker = attacker
         self.defender = defender
         self.tick_count: int = 0

@@ -3,7 +3,7 @@
 from util import Coord
 
 from .huntingbot import HuntingBotOffensive
-from management import shotfinder 
+from management import shotfinder
 
 
 class CheckerBotOffensive(HuntingBotOffensive):

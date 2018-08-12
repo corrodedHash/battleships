@@ -5,7 +5,6 @@ from management.field import Field
 from util import Size, Coord, Direction
 
 
-
 class FieldTest(unittest.TestCase):
     """Tests the field module"""
 

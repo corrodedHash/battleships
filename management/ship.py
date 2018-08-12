@@ -31,8 +31,10 @@ class Ship:
                 yield self.cells[0] + dirtuple
         else:
             possible_directions = [
-                direction for direction, orientation in DIRORI_MAP.items() if orientation == self.orientation()]
-            possible_direction_tuples = [DIRTUPLE_MAP[d] for d in possible_directions]
+                direction for direction,
+                orientation in DIRORI_MAP.items() if orientation == self.orientation()]
+            possible_direction_tuples = [DIRTUPLE_MAP[d]
+                                         for d in possible_directions]
             for cell in self.cells:
                 for dirtuple in possible_direction_tuples:
                     if cell + dirtuple not in self.cells:
@@ -45,7 +47,8 @@ class Ship:
             possible_directions = [
                 d for d, o in DIRORI_MAP.items() if o == self.orientation()]
             possible_directions = [clockwise(d) for d in possible_directions]
-            possible_direction_tuples = [DIRTUPLE_MAP[d] for d in possible_directions]
+            possible_direction_tuples = [DIRTUPLE_MAP[d]
+                                         for d in possible_directions]
             assert len(possible_direction_tuples) == 2
             for cell in self.cells:
                 for dirtuple in possible_direction_tuples:

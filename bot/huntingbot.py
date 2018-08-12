@@ -6,7 +6,7 @@ from bot.basebot import BaseBotOffensive
 from management.field import Field
 from management.ship import Ship
 from util import Coord
-from management import shotfinder 
+from management import shotfinder
 from typing import Optional
 
 
@@ -24,7 +24,7 @@ class HuntingBotOffensive(BaseBotOffensive):
 
         shot_list = shotfinder.hunt_ship(self.enemy_field, self.open_hit[0])
         refined_shot_list = [shot[0]
-                     for shot in shot_list if shot[1] == shot_list[0][1]]
+                             for shot in shot_list if shot[1] == shot_list[0][1]]
         coord_tuple = random.sample(refined_shot_list, 1)[0]
         return Coord(coord_tuple.x, coord_tuple.y)
 

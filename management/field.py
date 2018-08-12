@@ -19,7 +19,8 @@ class Field:
         suspect = enum.auto()
         intact = enum.auto()
 
-    def __init__(self, size: Size, shipcount: Optional[List[int]] = None) -> None:
+    def __init__(self, size: Size,
+                 shipcount: Optional[List[int]] = None) -> None:
         assert size.width > 0
         assert size.height > 0
         if shipcount is None:
@@ -36,8 +37,8 @@ class Field:
         return result
 
     def get_margins(self, cell: Coord) -> Dict[Direction, int]:
-        """Returns dictionary keyed with directions. 
-        Contains the amount of unknown spaces from the cell to the next 
+        """Returns dictionary keyed with directions.
+        Contains the amount of unknown spaces from the cell to the next
         known cell."""
         result = dict()
         for direction in Direction:
@@ -74,7 +75,8 @@ class Field:
         h_range = range(self.size.height)
         return (Coord(x, y) for x in w_range for y in h_range)
 
-    def print_table(self, char_fun: Optional[Callable[['Field', int, int], str]] = None) -> str:
+    def print_table(
+            self, char_fun: Optional[Callable[['Field', int, int], str]] = None) -> str:
         """Print the field"""
         def standard_print(board: 'Field', x: int, y: int) -> str:
             """Replace enum with char"""
@@ -85,7 +87,7 @@ class Field:
             return enum_translation[board[Coord(x, y)]]
         my_call_fun = standard_print
         if char_fun is not None:
-            my_char_fun = char_fun 
+            my_char_fun = char_fun
         result = "  "
         top_bar = ["| {:<2}".format(x + 1) for x in range(len(self.cells))]
         result += "".join(top_bar)

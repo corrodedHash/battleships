@@ -2,9 +2,12 @@ import enum
 
 Orientation = enum.Enum('Orientation', 'unknown vertical horizontal both')
 
-def accumulate_orientation(orione: Orientation, oritwo: Orientation) -> Orientation:
+
+def accumulate_orientation(
+        orione: Orientation,
+        oritwo: Orientation) -> Orientation:
     if orione == oritwo:
-        return orione 
+        return orione
 
     if orione == orione.vertical and oritwo == orione.horizontal:
         return Orientation.both
@@ -22,4 +25,3 @@ def accumulate_orientation(orione: Orientation, oritwo: Orientation) -> Orientat
         return orione
 
     raise RuntimeError
-

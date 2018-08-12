@@ -56,7 +56,8 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
                         try_ship.append(cur_cell)
                         cur_cell = cur_cell + dir_tuple
                     else:
-                        possur = (s for s in try_ship.get_sur() if s in self.own_field.size)
+                        possur = (s for s in try_ship.get_sur()
+                                  if s in self.own_field.size)
                         for sur in possur:
                             if self.own_field[sur] == Field.States.intact:
                                 break

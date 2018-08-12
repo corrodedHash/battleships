@@ -2,7 +2,7 @@
 import unittest
 
 from management.field import Field
-import management.shotfinder as shotfinder 
+import management.shotfinder as shotfinder
 from util import Size, Coord
 
 

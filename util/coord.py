@@ -56,7 +56,7 @@ class Coord:
         else:
             raise RuntimeError
 
-    def __eq__(self: 'Coord', other: 'Coord') -> bool: # type: ignore
+    def __eq__(self: 'Coord', other: 'Coord') -> bool:  # type: ignore
         return self.x == other.x and self.y == other.y
 
     def __str__(self: 'Coord') -> str:
