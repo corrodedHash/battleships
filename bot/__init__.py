@@ -1,5 +1,5 @@
 """Contains battleship AI classes"""
-from bot.basebot import BaseBotOffensive
+from bot.basebot import BaseBotOffensive, BaseBotDefensive, BaseBot
 from bot.checkerbot import CheckerBotOffensive
 from bot.grounds import OneWayGround
 from bot.huntingbot import HuntingBotOffensive

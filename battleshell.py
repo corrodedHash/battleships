@@ -13,7 +13,7 @@ class BattleShell(cmd.Cmd):
     prompt = 'prostagma? '
     file = None
 
-    def __init__(self: 'BattleShell') -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.field: Optional[field.Field] = None
 
@@ -32,7 +32,7 @@ class BattleShell(cmd.Cmd):
             return None
         return result
 
-    def do_hunt(self: 'BattleShell', arg: str) -> None:
+    def do_hunt(self, arg: str) -> None:
         """Hunt the ship under the cursor,
         giving possible further localtions"""
         coord = self._parse_coord(arg)
