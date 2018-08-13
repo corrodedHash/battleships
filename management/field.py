@@ -5,7 +5,7 @@ from enum import Enum
 import logging
 from typing import Optional, List, Dict, Generator, Callable, Iterator
 
-from util import Size, Coord, to_alpha, Direction, DIRTUPLE_MAP
+from util import Size, Coord, Direction, DIRTUPLE_MAP
 
 
 class Field:
@@ -75,30 +75,3 @@ class Field:
         h_range = range(self.size.height)
         return (Coord(x, y) for x in w_range for y in h_range)
 
-    def print_table(
-            self, char_fun: Optional[Callable[['Field', int, int], str]] = None) -> str:
-        """Print the field"""
-        def standard_print(board: 'Field', x: int, y: int) -> str:
-            """Replace enum with char"""
-            enum_translation = {self.States.empty: " ", self.States.hit: "X",
-                                self.States.miss: "~", self.States.sunk: "#",
-                                self.States.suspect: "v",
-                                self.States.intact: "O"}
-            return enum_translation[board[Coord(x, y)]]
-        my_call_fun = standard_print
-        if char_fun is not None:
-            my_char_fun = char_fun
-        result = "  "
-        top_bar = ["| {:<2}".format(x + 1) for x in range(len(self.cells))]
-        result += "".join(top_bar)
-        result += "\n--"
-        result += "+---" * len(self.cells)
-        result += "\n"
-        for cell_y in range(len(self.cells[0])):
-            result += "{0} ".format(to_alpha(cell_y))
-            for cell_x in range(len(self.cells)):
-                result += "|{:^3}".format(my_char_fun(self, cell_x, cell_y))
-            result += "\n--"
-            result += "+---" * len(self.cells)
-            result += "\n"
-        return result
