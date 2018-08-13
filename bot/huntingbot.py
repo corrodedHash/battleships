@@ -38,20 +38,22 @@ class HuntingBotOffensive(BaseBotOffensive):
                 assert coord in self.open_hit.possible_additions()
                 self.open_hit.append(coord)
                 for sur in self.open_hit.get_parallel_sur():
-                    if sur in self.enemy_field.size:
-                        if self.enemy_field[sur] == Field.States.empty:
-                            self.enemy_field[sur] = Field.States.suspect
+                    if sur not in self.enemy_field.size:
+                        continue
+                    if self.enemy_field[sur] == Field.States.empty:
+                        self.enemy_field[sur] = Field.States.suspect
         elif state == Field.States.sunk:
             assert self.open_hit is not None
             assert coord in self.open_hit.possible_additions()
+
             self.open_hit.append(coord)
-            par_sur = self.open_hit.get_parallel_sur()
-            fe_sur = self.open_hit.get_front_end_sur()
-            surroundings = itertools.chain(par_sur, fe_sur)
-            for sur in surroundings:
-                if sur in self.enemy_field.size:
-                    if self.enemy_field[sur] == Field.States.empty:
-                        self.enemy_field[sur] = Field.States.suspect
+            for sur in self.open_hit.get_sur():
+                if sur not in self.enemy_field.size:
+                    continue
+                if self.enemy_field[sur] == Field.States.empty:
+                    self.enemy_field[sur] = Field.States.suspect
+
             self.enemy_field.shipcount[len(self.open_hit) - 1] -= 1
             assert self.enemy_field.shipcount[len(self.open_hit) - 1] >= 0
+
             self.open_hit = None

@@ -69,6 +69,7 @@ class Ship:
         if len(self.cells) == 1:
             for x in self.possible_additions():
                 yield x
+            return
 
         for x in self.get_front_end_sur():
             yield x
