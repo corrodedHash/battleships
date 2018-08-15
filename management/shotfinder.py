@@ -1,17 +1,18 @@
 """Contains field utilities"""
+from typing import List, Tuple
+import logging
+
 from util import Coord, Direction, Orientation, DIRTUPLE_MAP, DIRORI_MAP
 from util.orientation import accumulate_orientation
 from management import field
 from management.field import Field
-from typing import List, Tuple
-import logging
 
 
 def get_ship_probability(battlefield: Field, cell: Coord) -> int:
     """Probability of a cell containing a ship"""
     if battlefield[cell] != field.Field.States.empty:
         logging.warning(
-            "Querying ship probability of known cell " +
+            "Querying ship probability of known cell %s",
             repr(cell))
         return 0
     margin = battlefield.get_margins(cell)
@@ -52,9 +53,10 @@ def find_ship_end(battlefield: Field, cell: Coord,
 
 
 def get_ship_orientation(battlefield: Field, cell: Coord) -> Orientation:
+    """Return orientation of ship"""
     if battlefield[cell] != field.Field.States.hit:
         logging.warning(
-            "Querying ship orientation on un-hit cell " +
+            "Querying ship orientation on un-hit cell %s",
             repr(cell))
         raise RuntimeError
 
@@ -70,7 +72,7 @@ def get_ship_orientation(battlefield: Field, cell: Coord) -> Orientation:
                 ship_orientation, DIRORI_MAP[direction])
 
     if ship_orientation == Orientation.both:
-        logging.warning("Impossible ship configuration on " + repr(cell))
+        logging.warning("Impossible ship configuration on %s", repr(cell))
         raise RuntimeError
 
     return ship_orientation
@@ -80,7 +82,7 @@ def hunt_ship(battlefield: Field, cell: Coord) -> List[Tuple[Coord, int]]:
     """Return possible next coords for the ship on the given coord"""
 
     if battlefield[cell] != field.Field.States.hit:
-        logging.warning("Hunting ship on un-hit cell " + repr(cell))
+        logging.warning("Hunting ship on un-hit cell %s", repr(cell))
         raise RuntimeError
 
     ship_orientation = get_ship_orientation(battlefield, cell)

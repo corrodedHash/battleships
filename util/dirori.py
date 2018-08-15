@@ -1,3 +1,4 @@
+"""Contains utilities to convert direction into orientation"""
 from .direction import Direction
 from .orientation import Orientation
 

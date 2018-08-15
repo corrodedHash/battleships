@@ -1,15 +1,16 @@
 """Contains Coord class"""
 import re
-from .alphanum import to_alpha, from_alpha
 from typing import Optional, Tuple
+
+from .alphanum import to_alpha, from_alpha
 
 
 class Coord:
     """Contains coordinates of a point on a discrete 2D plane
     and operations for those coordinates"""
 
-    def __init__(self: 'Coord', cell_x: int=0, cell_y: int=0,
-                 alphanum: Optional[str]=None) -> None:
+    def __init__(self: 'Coord', cell_x: int = 0, cell_y: int = 0,
+                 alphanum: Optional[str] = None) -> None:
         self.x: int = cell_x
         self.y: int = cell_y
         if alphanum is not None:
@@ -30,10 +31,9 @@ class Coord:
     def __getitem__(self: 'Coord', key: int) -> int:
         if key == 0:
             return self.x
-        elif key == 1:
+        if key == 1:
             return self.y
-        else:
-            raise KeyError
+        raise KeyError
 
     def __setitem__(self: 'Coord', key: int, value: int) -> None:
         assert value >= 0
@@ -47,14 +47,12 @@ class Coord:
     def __sub__(self: 'Coord', other: Tuple[int, int]) -> 'Coord':
         if isinstance(other, tuple):
             return Coord(self.x - other[0], self.y - other[1])
-        else:
-            raise RuntimeError
+        raise RuntimeError
 
     def __add__(self: 'Coord', other: Tuple[int, int]) -> 'Coord':
         if isinstance(other, tuple):
             return Coord(self.x + other[0], self.y + other[1])
-        else:
-            raise RuntimeError
+        raise RuntimeError
 
     def __eq__(self: 'Coord', other: 'Coord') -> bool:  # type: ignore
         return self.x == other.x and self.y == other.y

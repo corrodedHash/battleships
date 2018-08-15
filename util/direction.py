@@ -1,3 +1,4 @@
+"""Enum of possible directions in 2D"""
 import enum
 
 Direction = enum.Enum('Direction', 'top bottom left right')

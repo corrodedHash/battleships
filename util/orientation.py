@@ -1,3 +1,4 @@
+"""Contains orientation and utils"""
 import enum
 
 Orientation = enum.Enum('Orientation', 'unknown vertical horizontal both')
@@ -6,6 +7,7 @@ Orientation = enum.Enum('Orientation', 'unknown vertical horizontal both')
 def accumulate_orientation(
         orione: Orientation,
         oritwo: Orientation) -> Orientation:
+    """Returns the sum of two orientations"""
     if orione == oritwo:
         return orione
 

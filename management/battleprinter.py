@@ -1,11 +1,10 @@
 """Contains BattlePrinter class"""
 import random
-import logging
 from typing import Union, List, Tuple, Iterable, Optional, Callable
 
+from util import Coord, to_alpha
 from .field import Field
 from . import shotfinder
-from util import Coord, to_alpha
 
 
 def print_field(battlefield: Field, char_fun: Optional[Callable[[
@@ -18,7 +17,7 @@ def print_field(battlefield: Field, char_fun: Optional[Callable[[
                             Field.States.suspect: "v",
                             Field.States.intact: "O"}
         return enum_translation[board[Coord(x, y)]]
-    my_call_fun = standard_print
+    my_char_fun = standard_print
     if char_fun is not None:
         my_char_fun = char_fun
     result = "  "
@@ -50,11 +49,11 @@ def get_char(board: Field,
             if coord.x == cell_x and coord.y == cell_y:
                 return value
         return ""
-    elif current_cell == Field.States.hit:
+    if current_cell == Field.States.hit:
         return "X"
-    elif current_cell == Field.States.miss:
+    if current_cell == Field.States.miss:
         return "_"
-    elif current_cell == Field.States.suspect:
+    if current_cell == Field.States.suspect:
         return "~"
     return "?"
 

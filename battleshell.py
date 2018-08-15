@@ -1,9 +1,9 @@
 """Contains BattleShell class"""
 import cmd
+from typing import Optional
 
 import util
 from management import field, shotfinder, battleprinter
-from typing import Optional
 
 
 class BattleShell(cmd.Cmd):

@@ -1,8 +1,10 @@
 """Contains random shit to benchmarks the bots"""
-from bot import MarginBotOffensive, CheckerBotOffensive, RandomBotDefensive, OneWayGround, BaseBotOffensive
+from typing import Type
+
+from bot import MarginBotOffensive, CheckerBotOffensive
+from bot import RandomBotDefensive, OneWayGround, BaseBotOffensive
 from management.field import Field
 from util import Size
-from typing import Type
 
 
 def benchbot(OffensiveBotClass: Type[BaseBotOffensive]) -> int:

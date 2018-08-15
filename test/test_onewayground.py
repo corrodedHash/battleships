@@ -1,7 +1,7 @@
 """Contains the GroundsTest class"""
 import unittest
 
-from util import Size, Coord
+from util import Size
 from management.field import Field
 import bot.marginbot
 import bot.randombot
