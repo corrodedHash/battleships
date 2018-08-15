@@ -75,3 +75,8 @@ class Field:
         h_range = range(self.size.height)
         return (Coord(x, y) for x in w_range for y in h_range)
 
+    def __contains__(self, other: Coord) -> bool:
+        if isinstance(other, Coord):
+            return other.x >= 0 and other.y >= 0 and self.size > other
+        else:
+            raise TypeError

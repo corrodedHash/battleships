@@ -5,6 +5,7 @@ from util import Direction, DIRTUPLE_MAP
 from management.field import Field
 from management.ship import Ship
 from util import Coord
+import itertools 
 
 from . import basebot as basebot
 from typing import List, Optional
@@ -43,29 +44,28 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
             random.shuffle(shuffled_cells)
             shuffled_direction = list(Direction.__iter__())
             random.shuffle(shuffled_direction)
-            for cell in shuffled_cells:
-                for direction in shuffled_direction:
-                    try_ship = Ship()
-                    dir_tuple = DIRTUPLE_MAP[direction]
-                    cur_cell = cell
-                    for _ in range(shipsize):
-                        if cur_cell not in self.own_field.size:
+            for cell, direction in itertool.combinations(shuffled_cells, shuffled_direction):
+                try_ship = Ship()
+                dir_tuple = DIRTUPLE_MAP[direction]
+                cur_cell = cell
+                for _ in range(shipsize):
+                    if cur_cell not in self.own_field:
+                        break
+                    if self.own_field[cur_cell] == Field.States.intact:
+                        break
+                    try_ship.append(cur_cell)
+                    cur_cell = cur_cell + dir_tuple
+                else:
+                    possur = (s for s in try_ship.get_sur()
+                              if s in self.own_field.size)
+                    for sur in possur:
+                        if self.own_field[sur] == Field.States.intact:
                             break
-                        if self.own_field[cur_cell] == Field.States.intact:
-                            break
-                        try_ship.append(cur_cell)
-                        cur_cell = cur_cell + dir_tuple
                     else:
-                        possur = (s for s in try_ship.get_sur()
-                                  if s in self.own_field.size)
-                        for sur in possur:
-                            if self.own_field[sur] == Field.States.intact:
-                                break
-                        else:
-                            for shipcell in try_ship:
-                                self.own_field[shipcell] = Field.States.intact
-                            self.ships.append(try_ship.cells)
-                            return
+                        for shipcell in try_ship:
+                            self.own_field[shipcell] = Field.States.intact
+                        self.ships.append(try_ship.cells)
+                        return
             raise RuntimeError
 
         scl = self.own_field.shipcount
