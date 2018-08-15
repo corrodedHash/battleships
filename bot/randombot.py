@@ -3,7 +3,7 @@ import random
 
 from util import Direction, DIRTUPLE_MAP
 from management.field import Field
-from management.ship import Ship
+from management.ship import Ship, create_ship
 from util import Coord
 import itertools
 
@@ -38,26 +38,6 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
             return self.own_field[coord]
         raise RuntimeError
 
-    def _create_ship(self,
-                     position: Coord,
-                     dir_tuple: Tuple[int,
-                                      int],
-                     shipsize: int) -> Optional[Ship]:
-        try_ship = Ship()
-        for _ in range(shipsize):
-            if position not in self.own_field:
-                return None
-            if self.own_field[position] == Field.States.intact:
-                return None
-            try_ship.append(position)
-            position = position + dir_tuple
-
-        if not any(sur in self.own_field.size
-                   and self.own_field[sur] == Field.States.intact
-                   for sur in try_ship.get_sur()):
-            return try_ship
-        return None
-
     def _place_ships(self) -> None:
         def _place_ship(shipsize: int) -> None:
             shuffled_cells = list(self.own_field.__iter__())
@@ -66,8 +46,8 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
             random.shuffle(shuffled_direction)
             for cell, direction in itertools.product(
                     shuffled_cells, shuffled_direction):
-                try_ship = self._create_ship(
-                    cell, DIRTUPLE_MAP[direction], shipsize)
+                try_ship = create_ship(
+                    self.own_field, cell, DIRTUPLE_MAP[direction], shipsize)
 
                 if not try_ship:
                     continue

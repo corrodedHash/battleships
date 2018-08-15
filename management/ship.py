@@ -3,7 +3,8 @@
 import itertools
 from util import Coord, Orientation, DIRORI_MAP, DIRTUPLE_MAP
 from util.direction import clockwise, counter_clockwise
-from typing import List, Generator, Iterator
+from typing import List, Generator, Iterator, Tuple, Optional
+from management.field import Field
 
 
 class Ship:
@@ -105,3 +106,24 @@ class Ship:
             self.cells[key] = value
         else:
             raise TypeError
+
+
+def create_ship(battlefield: Field,
+                position: Coord,
+                dir_tuple: Tuple[int,
+                                 int],
+                shipsize: int) -> Optional[Ship]:
+    try_ship = Ship()
+    for _ in range(shipsize):
+        if position not in battlefield:
+            return None
+        if battlefield[position] == Field.States.intact:
+            return None
+        try_ship.append(position)
+        position = position + dir_tuple
+
+    if not any(sur in battlefield.size
+               and battlefield[sur] == Field.States.intact
+               for sur in try_ship.get_sur()):
+        return try_ship
+    return None
