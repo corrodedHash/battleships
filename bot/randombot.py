@@ -5,10 +5,10 @@ from util import Direction, DIRTUPLE_MAP
 from management.field import Field
 from management.ship import Ship
 from util import Coord
-import itertools 
+import itertools
 
 from . import basebot as basebot
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 class RandomBotDefensive(basebot.BaseBotDefensive):
@@ -38,34 +38,45 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
             return self.own_field[coord]
         raise RuntimeError
 
+    def _create_ship(self,
+                     position: Coord,
+                     dir_tuple: Tuple[int,
+                                      int],
+                     shipsize: int) -> Optional[Ship]:
+        try_ship = Ship()
+        for _ in range(shipsize):
+            if position not in self.own_field:
+                return None
+            if self.own_field[position] == Field.States.intact:
+                return None
+            try_ship.append(position)
+            position = position + dir_tuple
+
+        if not any(sur in self.own_field.size
+                   and self.own_field[sur] == Field.States.intact
+                   for sur in try_ship.get_sur()):
+            return try_ship
+        return None
+
     def _place_ships(self) -> None:
         def _place_ship(shipsize: int) -> None:
             shuffled_cells = list(self.own_field.__iter__())
             random.shuffle(shuffled_cells)
             shuffled_direction = list(Direction.__iter__())
             random.shuffle(shuffled_direction)
-            for cell, direction in itertool.combinations(shuffled_cells, shuffled_direction):
-                try_ship = Ship()
-                dir_tuple = DIRTUPLE_MAP[direction]
-                cur_cell = cell
-                for _ in range(shipsize):
-                    if cur_cell not in self.own_field:
-                        break
-                    if self.own_field[cur_cell] == Field.States.intact:
-                        break
-                    try_ship.append(cur_cell)
-                    cur_cell = cur_cell + dir_tuple
-                else:
-                    possur = (s for s in try_ship.get_sur()
-                              if s in self.own_field.size)
-                    for sur in possur:
-                        if self.own_field[sur] == Field.States.intact:
-                            break
-                    else:
-                        for shipcell in try_ship:
-                            self.own_field[shipcell] = Field.States.intact
-                        self.ships.append(try_ship.cells)
-                        return
+            for cell, direction in itertools.product(
+                    shuffled_cells, shuffled_direction):
+                try_ship = self._create_ship(
+                    cell, DIRTUPLE_MAP[direction], shipsize)
+
+                if not try_ship:
+                    continue
+
+                for shipcell in try_ship:
+                    self.own_field[shipcell] = Field.States.intact
+                self.ships.append(try_ship.cells)
+                return
+
             raise RuntimeError
 
         scl = self.own_field.shipcount
