@@ -3,7 +3,7 @@ import copy
 import enum
 from enum import Enum
 import logging
-from typing import Optional, List, Dict, Generator, Callable, Iterator
+from typing import Optional, List, Dict, Iterator
 
 from util import Size, Coord, Direction, DIRTUPLE_MAP
 
@@ -59,15 +59,16 @@ class Field:
     def __getitem__(self, key: Coord) -> States:
         if isinstance(key, Coord):
             return self.cells[key.x][key.y]
-        else:
-            logging.error(type(key))
-            raise TypeError
+
+        logging.error(type(key))
+        raise TypeError
 
     def __setitem__(self, key: Coord, value: States) -> None:
         if isinstance(key, Coord):
             self.cells[key.x][key.y] = value
-        else:
-            raise TypeError
+            return
+
+        raise TypeError
 
     def __iter__(self)-> Iterator[Coord]:
         """Returns a generator to access all cells of the field"""
@@ -78,5 +79,5 @@ class Field:
     def __contains__(self, other: Coord) -> bool:
         if isinstance(other, Coord):
             return other.x >= 0 and other.y >= 0 and self.size > other
-        else:
-            raise TypeError
+
+        raise TypeError

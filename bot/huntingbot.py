@@ -1,13 +1,12 @@
 """Contains HuntingBot class"""
 import random
-import itertools
+from typing import Optional
 
 from bot.basebot import BaseBotOffensive
+from management import shotfinder
 from management.field import Field
 from management.ship import Ship
 from util import Coord
-from management import shotfinder
-from typing import Optional
 
 
 class HuntingBotOffensive(BaseBotOffensive):

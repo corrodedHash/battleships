@@ -2,8 +2,9 @@
 
 import random
 from util import Coord
-from .huntingbot import HuntingBotOffensive
+
 from management import shotfinder
+from .huntingbot import HuntingBotOffensive
 
 
 class MarginBotOffensive(HuntingBotOffensive):

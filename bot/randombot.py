@@ -1,14 +1,14 @@
 """Contains RandomBot class"""
 import random
 
-from util import Direction, DIRTUPLE_MAP
-from management.field import Field
-from management.ship import Ship, create_ship
-from util import Coord
+from typing import List, Optional
 import itertools
 
-from . import basebot as basebot
-from typing import List, Optional, Tuple
+from management.field import Field
+from management.ship import create_ship
+from util import Coord, Direction, DIRTUPLE_MAP
+
+from . import basebot
 
 
 class RandomBotDefensive(basebot.BaseBotDefensive):

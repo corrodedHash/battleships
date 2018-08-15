@@ -2,10 +2,10 @@
 and protecting variances"""
 
 import logging
+from typing import Optional
 
 from management.field import Field
 from util import Coord
-from typing import Optional
 
 
 class BaseBotOffensive:

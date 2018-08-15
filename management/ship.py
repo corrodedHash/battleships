@@ -1,9 +1,8 @@
 """Contains Ship class"""
-
-import itertools
-from util import Coord, Orientation, DIRORI_MAP, DIRTUPLE_MAP
-from util.direction import clockwise, counter_clockwise
 from typing import List, Generator, Iterator, Tuple, Optional
+
+from util import Coord, Orientation, DIRORI_MAP, DIRTUPLE_MAP
+from util.direction import clockwise
 from management.field import Field
 
 
@@ -26,7 +25,7 @@ class Ship:
         """Return generator of cells the ship can expand
         without violatig the orientation"""
         if not self.cells:
-            return None
+            return
         if len(self.cells) == 1:
             for _, dirtuple in DIRTUPLE_MAP.items():
                 yield self.cells[0] + dirtuple
@@ -62,8 +61,7 @@ class Ship:
         """Get list of cells that are at the front and end of the ship"""
         if len(self.cells) >= 2:
             return self.possible_additions()
-        else:
-            raise RuntimeError
+        raise RuntimeError
 
     def get_sur(self) -> Generator[Coord, None, None]:
         """Get all cells that surround this ship"""
@@ -78,6 +76,7 @@ class Ship:
             yield x
 
     def append(self, coord: Coord) -> None:
+        """Append cell to ship"""
         if not self.cells:
             self.cells.append(coord)
         elif len(self.cells) == 1:
@@ -98,14 +97,12 @@ class Ship:
     def __getitem__(self, key: int) -> Coord:
         if isinstance(key, int):
             return self.cells[key]
-        else:
-            raise TypeError
+        raise TypeError
 
     def __setitem__(self, key: int, value: Coord) -> None:
         if isinstance(key, int):
             self.cells[key] = value
-        else:
-            raise TypeError
+        raise TypeError
 
 
 def create_ship(battlefield: Field,
@@ -113,6 +110,7 @@ def create_ship(battlefield: Field,
                 dir_tuple: Tuple[int,
                                  int],
                 shipsize: int) -> Optional[Ship]:
+    """Create ship from a position, size and a direction"""
     try_ship = Ship()
     for _ in range(shipsize):
         if position not in battlefield:
