@@ -16,64 +16,81 @@ class Ship:
         """Return orientation given from the coordinates in cells"""
         if len(self.cells) < 2:
             return Orientation.unknown
+
         for direction, dirtuple in DIRTUPLE_MAP.items():
             if self.cells[0] + dirtuple in self.cells:
                 return DIRORI_MAP[direction]
+
         raise RuntimeError
 
-    def possible_additions(self) -> Generator[Coord, None, None]:
+    def get_parallel_sur(self) -> Iterator[Coord]:
+        """Get list of all cells that are next to the ship
+        in the orientation of the ship"""
+        if len(self.cells) < 2:
+            raise RuntimeError
+
+        possible_directions = (
+             clockwise(direction) for direction,
+             orientation in DIRORI_MAP.items() 
+             if orientation == self.orientation())
+
+        possible_direction_tuples = [DIRTUPLE_MAP[d]
+                                     for d in possible_directions]
+
+        possible_cells = (
+                cell + dirtuple 
+                for cell in self.cells 
+                for dirtuple in possible_direction_tuples)
+        
+        yield from possible_cells
+
+
+    def get_front_end_sur(self) -> Iterator[Coord]:
+        """Get list of cells that are at the front and end of the ship"""
+        if len(self.cells) < 2:
+            raise RuntimeError
+
+        possible_directions = (
+             direction for direction,
+             orientation in DIRORI_MAP.items() 
+             if orientation == self.orientation())
+
+        possible_direction_tuples = [DIRTUPLE_MAP[d]
+                                     for d in possible_directions]
+        possible_cells = (
+                cell + dirtuple 
+                for cell in self.cells 
+                for dirtuple in possible_direction_tuples)
+
+        possible_new_cells = (
+                cell for cell in possible_cells
+                if cell not in self.cells)
+
+        yield from possible_new_cells
+
+    def possible_additions(self) -> Iterator[Coord]:
         """Return generator of cells the ship can expand
         without violatig the orientation"""
         if not self.cells:
             return
+
         if len(self.cells) == 1:
             for _, dirtuple in DIRTUPLE_MAP.items():
                 yield self.cells[0] + dirtuple
-        else:
-            possible_directions = [
-                direction for direction,
-                orientation in DIRORI_MAP.items() if orientation == self.orientation()]
-            possible_direction_tuples = [DIRTUPLE_MAP[d]
-                                         for d in possible_directions]
-            for cell in self.cells:
-                for dirtuple in possible_direction_tuples:
-                    if cell + dirtuple not in self.cells:
-                        yield cell + dirtuple
-
-    def get_parallel_sur(self) -> Generator[Coord, None, None]:
-        """Get list of all cells that are next to the ship
-        in the orientation of the ship"""
-        if len(self.cells) >= 2:
-            possible_directions = [
-                d for d, o in DIRORI_MAP.items() if o == self.orientation()]
-            possible_directions = [clockwise(d) for d in possible_directions]
-            possible_direction_tuples = [DIRTUPLE_MAP[d]
-                                         for d in possible_directions]
-            assert len(possible_direction_tuples) == 2
-            for cell in self.cells:
-                for dirtuple in possible_direction_tuples:
-                    yield cell + dirtuple
-
-        else:
-            raise RuntimeError
-
-    def get_front_end_sur(self) -> Generator[Coord, None, None]:
-        """Get list of cells that are at the front and end of the ship"""
-        if len(self.cells) >= 2:
-            return self.possible_additions()
-        raise RuntimeError
-
-    def get_sur(self) -> Generator[Coord, None, None]:
-        """Get all cells that surround this ship"""
-        if len(self.cells) == 1:
-            for x in self.possible_additions():
-                yield x
             return
 
-        for x in self.get_front_end_sur():
-            yield x
-        for x in self.get_parallel_sur():
-            yield x
+        yield from self.get_front_end_sur() 
+
+
+
+    def get_sur(self) -> Iterator[Coord]:
+        """Get all cells that surround this ship"""
+        if len(self.cells) == 1:
+            yield from self.possible_additions()
+            return
+
+        yield from self.get_front_end_sur()
+        yield from self.get_parallel_sur()
 
     def append(self, coord: Coord) -> None:
         """Append cell to ship"""
