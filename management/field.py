@@ -10,14 +10,7 @@ from util import Size, Coord, Direction, DIRTUPLE_MAP
 
 class Field:
     """Battleship field"""
-    class States(Enum):
-        """Possible states a battleship field cell can be in"""
-        empty = enum.auto()
-        miss = enum.auto()
-        hit = enum.auto()
-        sunk = enum.auto()
-        suspect = enum.auto()
-        intact = enum.auto()
+    States = enum.Enum('States', 'empty miss hit sunk suspect intact')
 
     def __init__(self, size: Size,
                  shipcount: Optional[List[int]] = None) -> None:

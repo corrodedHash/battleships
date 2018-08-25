@@ -8,16 +8,16 @@ from . import shotfinder
 
 
 def print_field(battlefield: Field, char_fun: Optional[Callable[[
-        'Field', int, int], str]] = None) -> str:
+        Field, int, int], str]] = None) -> str:
     """Print the field"""
-    def standard_print(board: 'Field', x: int, y: int) -> str:
+    def standard_print(board: Field, x: int, y: int) -> str:
         """Replace enum with char"""
         enum_translation = {Field.States.empty: " ", Field.States.hit: "X",
                             Field.States.miss: "~", Field.States.sunk: "#",
                             Field.States.suspect: "v",
                             Field.States.intact: "O"}
         return enum_translation[board[Coord(x, y)]]
-    my_char_fun = standard_print
+    my_char_fun: Callable[[Field, int, int], str] = standard_print
     if char_fun is not None:
         my_char_fun = char_fun
     result = "  "
