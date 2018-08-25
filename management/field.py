@@ -20,7 +20,7 @@ class Field:
             shipcount = [0, 4, 3, 2, 1]
         self.size = size
         self.shipcount = shipcount
-        self.cells = Field.generate_field(self.size)
+        self._cells = Field.generate_field(self.size)
 
     @staticmethod
     def generate_field(size: Size)-> List[List[States]]:
@@ -51,14 +51,14 @@ class Field:
 
     def __getitem__(self, key: Coord) -> States:
         if isinstance(key, Coord):
-            return self.cells[key.x][key.y]
+            return self._cells[key.x][key.y]
 
         logging.error(type(key))
         raise TypeError
 
     def __setitem__(self, key: Coord, value: States) -> None:
         if isinstance(key, Coord):
-            self.cells[key.x][key.y] = value
+            self._cells[key.x][key.y] = value
             return
 
         raise TypeError
