@@ -1,8 +1,7 @@
 """Contains Ship class"""
-from typing import List, Generator, Iterator, Tuple, Optional
+from typing import List, Iterator, Tuple, Optional
 
-from util import Coord, Orientation, DIRORI_MAP, DIRTUPLE_MAP
-from util.direction import clockwise
+from util import Coord, Orientation, change_orientation, DIRORI_MAP, DIRTUPLE_MAP
 from management.field import Field
 
 
@@ -23,50 +22,45 @@ class Ship:
 
         raise RuntimeError
 
+    def orientated_surrounding_cells(
+            self,
+            target_orientation: Orientation)-> Iterator[Coord]:
+        """Returns cells next to the ship of the given orientation"""
+        possible_directions = (
+            direction for direction,
+            orientation in DIRORI_MAP.items()
+            if orientation == target_orientation)
+
+        possible_direction_tuples = [DIRTUPLE_MAP[d]
+                                     for d in possible_directions]
+
+        possible_cells = (
+            cell + dirtuple
+            for cell in self.cells
+            for dirtuple in possible_direction_tuples)
+
+        possible_new_cells = (
+            cell for cell in possible_cells
+            if cell not in self.cells)
+
+        yield from possible_new_cells
+
     def get_parallel_sur(self) -> Iterator[Coord]:
         """Get list of all cells that are next to the ship
         in the orientation of the ship"""
         if len(self.cells) < 2:
             raise RuntimeError
 
-        possible_directions = (
-             clockwise(direction) for direction,
-             orientation in DIRORI_MAP.items() 
-             if orientation == self.orientation())
-
-        possible_direction_tuples = [DIRTUPLE_MAP[d]
-                                     for d in possible_directions]
-
-        possible_cells = (
-                cell + dirtuple 
-                for cell in self.cells 
-                for dirtuple in possible_direction_tuples)
-        
-        yield from possible_cells
-
+        yield from self.orientated_surrounding_cells(
+            change_orientation(
+                self.orientation()))
 
     def get_front_end_sur(self) -> Iterator[Coord]:
         """Get list of cells that are at the front and end of the ship"""
         if len(self.cells) < 2:
             raise RuntimeError
 
-        possible_directions = (
-             direction for direction,
-             orientation in DIRORI_MAP.items() 
-             if orientation == self.orientation())
-
-        possible_direction_tuples = [DIRTUPLE_MAP[d]
-                                     for d in possible_directions]
-        possible_cells = (
-                cell + dirtuple 
-                for cell in self.cells 
-                for dirtuple in possible_direction_tuples)
-
-        possible_new_cells = (
-                cell for cell in possible_cells
-                if cell not in self.cells)
-
-        yield from possible_new_cells
+        yield from self.orientated_surrounding_cells(self.orientation())
 
     def possible_additions(self) -> Iterator[Coord]:
         """Return generator of cells the ship can expand
@@ -79,9 +73,7 @@ class Ship:
                 yield self.cells[0] + dirtuple
             return
 
-        yield from self.get_front_end_sur() 
-
-
+        yield from self.get_front_end_sur()
 
     def get_sur(self) -> Iterator[Coord]:
         """Get all cells that surround this ship"""
