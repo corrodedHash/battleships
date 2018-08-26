@@ -43,7 +43,7 @@ class Ship:
             cell for cell in possible_cells
             if cell not in self.cells)
 
-        yield from possible_new_cells
+        return possible_new_cells
 
     def get_parallel_sur(self) -> Iterator[Coord]:
         """Get list of all cells that are next to the ship
@@ -51,7 +51,7 @@ class Ship:
         if len(self.cells) < 2:
             raise RuntimeError
 
-        yield from self.orientated_surrounding_cells(
+        return self.orientated_surrounding_cells(
             change_orientation(
                 self.orientation()))
 
@@ -60,7 +60,7 @@ class Ship:
         if len(self.cells) < 2:
             raise RuntimeError
 
-        yield from self.orientated_surrounding_cells(self.orientation())
+        return self.orientated_surrounding_cells(self.orientation())
 
     def possible_additions(self) -> Iterator[Coord]:
         """Return generator of cells the ship can expand
