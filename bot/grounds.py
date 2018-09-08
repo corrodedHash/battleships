@@ -9,7 +9,7 @@ class OneWayGround:
                  defender: BaseBotDefensive) -> None:
         self.attacker = attacker
         self.defender = defender
-        self.tick_count: int = 0
+        self.tick_count = 0
 
     def tick(self) -> bool:
         """Make the attacker shoot once"""

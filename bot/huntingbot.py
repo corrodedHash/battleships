@@ -14,7 +14,7 @@ class HuntingBotOffensive(BaseBotOffensive):
 
     def __init__(self, enemy_field: Field) -> None:
         BaseBotOffensive.__init__(self, enemy_field)
-        self.open_hit: Optional[Ship] = None
+        self.open_hit = None #type: Optional[Ship]
 
     def shoot(self) -> Coord:
         """Get next cell to shoot at"""

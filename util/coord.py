@@ -11,8 +11,8 @@ class Coord:
 
     def __init__(self: 'Coord', cell_x: int = 0, cell_y: int = 0,
                  alphanum: Optional[str] = None) -> None:
-        self.x: int = cell_x
-        self.y: int = cell_y
+        self.x = cell_x
+        self.y = cell_y
         if alphanum is not None:
             alphapart = re.search(r'\A[A-Z]+', alphanum.upper())
             if not alphapart:

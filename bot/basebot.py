@@ -27,7 +27,7 @@ class BaseBotDefensive:
     """Common interface for every receiving battleship AI"""
 
     def __init__(self, own_field: Field) -> None:
-        self.own_field: Field = own_field
+        self.own_field = own_field
 
     def get_shot(self, coord: Coord) -> Optional[Field.States]:
         """Shoot this AI"""

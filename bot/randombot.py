@@ -16,7 +16,7 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
 
     def __init__(self, own_field: Field) -> None:
         basebot.BaseBotDefensive.__init__(self, own_field)
-        self.ships: List[List[Coord]] = []
+        self.ships = [] # type: List[List[Coord]]
 
         self._place_ships()
 
