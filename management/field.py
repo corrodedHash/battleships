@@ -1,5 +1,4 @@
 """Contains Field class"""
-import copy
 import enum
 from enum import Enum
 import logging
@@ -37,7 +36,7 @@ class Field:
         for direction in Direction:
             dir_tuple = DIRTUPLE_MAP[direction]
             count = 0
-            new_point = copy.deepcopy(cell) + dir_tuple
+            new_point = cell + dir_tuple
             while True:
                 if new_point not in self.size:
                     break

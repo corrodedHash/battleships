@@ -5,19 +5,16 @@ from util import Coord, Orientation, change_orientation, DIRORI_MAP, DIRTUPLE_MA
 from management.field import Field
 
 
-class Ship:
+class Ship(list):
     """Class to manage cellular ships"""
-
-    def __init__(self) -> None:
-        self.cells: List[Coord] = []
 
     def orientation(self) -> Orientation:
         """Return orientation given from the coordinates in cells"""
-        if len(self.cells) < 2:
+        if len(self) < 2:
             return Orientation.unknown
 
         for direction, dirtuple in DIRTUPLE_MAP.items():
-            if self.cells[0] + dirtuple in self.cells:
+            if self[0] + dirtuple in self:
                 return DIRORI_MAP[direction]
 
         raise RuntimeError
@@ -36,19 +33,19 @@ class Ship:
 
         possible_cells = (
             cell + dirtuple
-            for cell in self.cells
+            for cell in self
             for dirtuple in possible_direction_tuples)
 
         possible_new_cells = (
             cell for cell in possible_cells
-            if cell not in self.cells)
+            if cell not in self)
 
         return possible_new_cells
 
     def get_parallel_sur(self) -> Iterator[Coord]:
         """Get list of all cells that are next to the ship
         in the orientation of the ship"""
-        if len(self.cells) < 2:
+        if len(self) < 2:
             raise RuntimeError
 
         return self.orientated_surrounding_cells(
@@ -57,7 +54,7 @@ class Ship:
 
     def get_front_end_sur(self) -> Iterator[Coord]:
         """Get list of cells that are at the front and end of the ship"""
-        if len(self.cells) < 2:
+        if len(self) < 2:
             raise RuntimeError
 
         return self.orientated_surrounding_cells(self.orientation())
@@ -65,19 +62,19 @@ class Ship:
     def possible_additions(self) -> Iterator[Coord]:
         """Return generator of cells the ship can expand
         without violatig the orientation"""
-        if not self.cells:
+        if not self:
             return
 
-        if len(self.cells) == 1:
+        if len(self) == 1:
             for _, dirtuple in DIRTUPLE_MAP.items():
-                yield self.cells[0] + dirtuple
+                yield self[0] + dirtuple
             return
 
         yield from self.get_front_end_sur()
 
     def get_sur(self) -> Iterator[Coord]:
         """Get all cells that surround this ship"""
-        if len(self.cells) == 1:
+        if len(self) == 1:
             yield from self.possible_additions()
             return
 
@@ -86,32 +83,16 @@ class Ship:
 
     def append(self, coord: Coord) -> None:
         """Append cell to ship"""
-        if not self.cells:
-            self.cells.append(coord)
-        elif len(self.cells) == 1:
+        if not self:
+            list.append(self, coord)
+        elif len(self) == 1:
             if coord not in self.get_sur():
                 raise RuntimeError
-            self.cells.append(coord)
+            list.append(self, coord)
         else:
             if coord not in self.get_front_end_sur():
                 raise RuntimeError
-            self.cells.append(coord)
-
-    def __len__(self) -> int:
-        return len(self.cells)
-
-    def __iter__(self) -> Iterator[Coord]:
-        return self.cells.__iter__()
-
-    def __getitem__(self, key: int) -> Coord:
-        if isinstance(key, int):
-            return self.cells[key]
-        raise TypeError
-
-    def __setitem__(self, key: int, value: Coord) -> None:
-        if isinstance(key, int):
-            self.cells[key] = value
-        raise TypeError
+            list.append(self, coord)
 
 
 def create_ship(battlefield: Field,

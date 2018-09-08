@@ -11,22 +11,28 @@ from management.field import Field
 def get_ship_probability(battlefield: Field, cell: Coord) -> int:
     """Probability of a cell containing a ship"""
     if battlefield[cell] != field.Field.States.empty:
-        logging.warning(
-            "Querying ship probability of known cell %s",
-            repr(cell))
+        logging.warning("Querying ship probability of known cell %s",
+                        repr(cell))
         return 0
+
     margin = battlefield.get_margins(cell)
     total_possible_positions = 0
+
     for ship_size in range(1, len(battlefield.shipcount) + 1):
+        if battlefield.shipcount[ship_size - 1] == 0:
+            continue
+
         top = min(margin[Direction.top], ship_size - 1)
-        bottom = min(
-            margin[Direction.bottom], ship_size - 1)
+        bottom = min(margin[Direction.bottom], ship_size - 1)
         left = min(margin[Direction.left], ship_size - 1)
         right = min(margin[Direction.right], ship_size - 1)
+
         possible_positions = max(0, left + right + 2 - ship_size)
         possible_positions += max(0, top + bottom + 2 - ship_size)
-        total_possible_positions += possible_positions * \
-            battlefield.shipcount[ship_size - 1]
+        possible_positions *= battlefield.shipcount[ship_size - 1]
+
+        total_possible_positions += possible_positions
+
     return total_possible_positions
 
 

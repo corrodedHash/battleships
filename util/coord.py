@@ -62,6 +62,3 @@ class Coord:
 
     def __repr__(self: 'Coord') -> str:
         return to_alpha(self.y) + str(self.x + 1)
-
-    def __deepcopy__(self: 'Coord', other: 'Coord') -> 'Coord':
-        return Coord(self.x, self.y)

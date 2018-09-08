@@ -54,7 +54,7 @@ class RandomBotDefensive(basebot.BaseBotDefensive):
 
                 for shipcell in try_ship:
                     self.own_field[shipcell] = Field.States.intact
-                self.ships.append(try_ship.cells)
+                self.ships.append(try_ship)
                 return
 
             raise RuntimeError
