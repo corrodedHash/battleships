@@ -38,15 +38,3 @@ class BaseBotDefensive:
         else:
             logging.warning("Hitting cell that was already shot at")
         return self.own_field[coord]
-
-
-class BaseBot(BaseBotOffensive, BaseBotDefensive):
-    """Common interface for battleship AI that protec but also attac"""
-
-    def __init__(self, own_field: Field, enemy_field: Field) -> None:
-        BaseBotOffensive.__init__(self, enemy_field)
-        BaseBotDefensive.__init__(self, own_field)
-
-    def shoot(self) -> Coord:
-        """Get next shot from this AI"""
-        raise NotImplementedError
