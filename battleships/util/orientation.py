@@ -3,6 +3,7 @@ import enum
 
 Orientation = enum.Enum('Orientation', 'unknown vertical horizontal both')
 
+
 def change_orientation(orientation: Orientation) -> Orientation:
     """Inverts vertical and horizontal orientation, and unknown and both"""
     if orientation == Orientation.vertical:
@@ -14,6 +15,7 @@ def change_orientation(orientation: Orientation) -> Orientation:
     if orientation == Orientation.unknown:
         return Orientation.both
     raise RuntimeError
+
 
 def accumulate_orientation(
         orione: Orientation,

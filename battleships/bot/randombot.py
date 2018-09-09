@@ -1,14 +1,16 @@
 """Contains RandomBot class"""
 import random
 
-from typing import List, Optional
+from typing import List
 import itertools
 
 from ..management.field import Field
 from ..management.ship import create_ship, Ship
-from ..util import Coord, Direction, DIRTUPLE_MAP
+from ..util import Direction, DIRTUPLE_MAP
+
 
 def place_ships_random(battlefield: Field) -> List[Ship]:
+    """Place ships in a field"""
     def _place_ship(shipsize: int) -> Ship:
         shuffled_cells = list(battlefield.__iter__())
         random.shuffle(shuffled_cells)

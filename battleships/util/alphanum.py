@@ -2,6 +2,7 @@
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
 def _num_digits_in_base(number: int, base: int) -> int:
     """Return amount of digits needed to write the number in the given base"""
     assert number >= 0
@@ -19,7 +20,7 @@ def to_alpha(number: int) -> str:
     """Convert a number to letters"""
 
     assert number >= 0
-    power =  _num_digits_in_base(number, len(ALPHABET)) - 1
+    power = _num_digits_in_base(number, len(ALPHABET)) - 1
 
     result = ""
     while power >= 0:

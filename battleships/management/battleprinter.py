@@ -1,6 +1,6 @@
 """Contains BattlePrinter class"""
 import random
-from typing import Union, List, Tuple, Iterable, Optional, Callable
+from typing import List, Tuple, Iterable, Callable
 
 from ..util import Coord, to_alpha
 from .field import Field
@@ -33,8 +33,8 @@ def print_field(battlefield: Field, char_fun: Callable[[
         Field, Coord], str] = default_get_char) -> str:
     """Print the field"""
 
-    top_bar_items = ["| {:<2}".format(x + 1) for x in 
-            range(battlefield.size.width)]
+    top_bar_items = ["| {:<2}".format(x + 1) for x in
+                     range(battlefield.size.width)]
     top_bar = "".join(top_bar_items)
     top_bar = "  " + top_bar
 
@@ -65,7 +65,7 @@ def print_summary(battlefield: Field) -> str:
     shot_list = shotfinder.list_ship_probabilities(battlefield)
     refined_shot_list = list(_truncate_shots(shot_list))
 
-    def cool_char_printer(board: Field, cell: Coord) -> str: 
+    def cool_char_printer(board: Field, cell: Coord) -> str:
         return probability_get_char(board, shot_list, cell)
 
     result += print_field(battlefield, cool_char_printer)
