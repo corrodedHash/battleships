@@ -6,27 +6,27 @@ bots that only defend
 
 ## Code tour
 
-**[management](management/)** contains necessary classes to represent the
+**[management](battleships/management/)** contains necessary classes to represent the
 board, and utilities that work on this board, like finding ships from hit
 cells, and computing all surrounding cells of such a ship
 
-**[bot](bot/)** contains tools to play the game automatically, _randombot_ that
+**[bot](battleships/bot/)** contains tools to play the game automatically, _randombot_ that
 only gets hit, and _marginbot_ or _checkerbot_ that only shoot.
 
-**[util](util/)** contains random classes that are needed for this project
+**[util](battleships/util/)** contains random classes that are needed for this project
 
-**battleshell.py** is a shell for playing manually
+**[battleshell.py](battleships/battleshell.py)** is a shell for playing manually
 
 ## Bots
-**[marginbot](bot/marginbot.py)** shoots cells with the statistically highest
+**[marginbot](battleships/bot/marginbot.py)** shoots cells with the statistically highest
 chance of a ship being there, which basically is the amount of free space of
 this cells 4 sides.  
-**[checkerbot](bot/checkerbot.py)** is marginbot, but only shoots 'at the white
+**[checkerbot](battleships/bot/checkerbot.py)** is marginbot, but only shoots 'at the white
 fields in a chess board', e.g. only at A1, A3, B2, B4...
 
 ## Benchmarks
 Shots needed to win in 20 games played with randomly placed ships
-([Data](bench.txt)):  
+([Data](benchmark.txt)):  
 
 | bot | mean | median | stdev |
 |---|---|---|---|
