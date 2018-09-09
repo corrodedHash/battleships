@@ -8,9 +8,9 @@ from .management.field import Field
 from .util import Size
 
 
-def benchbot(OffensiveBotClass: Type[BaseBot]) -> int:
+def benchbot(offensivebotclass: Type[BaseBot]) -> int:
     """Create a ground with a marginbot attacker and play"""
-    attacker = OffensiveBotClass(Field(Size(10, 10)))
+    attacker = offensivebotclass(Field(Size(10, 10)))
     defender_field = Field(Size(10, 10))
     defender_ships = place_ships_random(defender_field)
     defender = DefenderBot(defender_field, defender_ships)
@@ -23,12 +23,12 @@ def benchbot(OffensiveBotClass: Type[BaseBot]) -> int:
 
 def main() -> None:
     """Run the benchmarks"""
-    for BotClass in (CheckerBot, MarginBot):
+    for botclass in (CheckerBot, MarginBot):
         results = []
-        print(BotClass.__name__)
+        print(botclass.__name__)
         print("[", end="")
         for _ in range(20):
-            results.append(benchbot(BotClass))
+            results.append(benchbot(botclass))
             print(str(results[-1]) + ", ", end="", flush=True)
         print()
         print(sorted(results))

@@ -1,6 +1,5 @@
 """Contains Field class"""
 import enum
-from enum import Enum
 import logging
 from typing import Optional, List, Dict, Iterator
 
