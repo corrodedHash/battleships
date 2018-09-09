@@ -1,5 +1,9 @@
 # Battleships
-[![Build Status](https://travis-ci.org/corrodedHash/battleships.svg?branch=master)](https://travis-ci.org/corrodedHash/battleships)
+
+|Branch|CI|Test Coverage|
+|-|-|-|
+| Master  | [![Build Status master](https://travis-ci.org/corrodedHash/battleships.svg?branch=master)](https://travis-ci.org/corrodedHash/battleships) |   [![codecov master](https://codecov.io/gh/corrodedHash/battleships/branch/master/graph/badge.svg)](https://codecov.io/gh/corrodedHash/battleships) |
+| Develop | [![Build Status develop](https://travis-ci.org/corrodedHash/battleships.svg?branch=develop)](https://travis-ci.org/corrodedHash/battleships)                | [![codecov develop](https://codecov.io/gh/corrodedHash/battleships/branch/develop/graph/badge.svg)](https://codecov.io/gh/corrodedHash/battleships) |
 
 Suite containing a variable size battleship field, bots that only shoot and
 bots that only defend

@@ -1,5 +1,6 @@
 """Contains Field class"""
 import enum
+from enum import Enum
 import logging
 from typing import Optional, List, Dict, Iterator
 
@@ -18,14 +19,8 @@ class Field:
             shipcount = [0, 4, 3, 2, 1]
         self.size = size
         self.shipcount = shipcount
-        self._cells = Field.generate_field(self.size)
-
-    @staticmethod
-    def generate_field(size: Size)-> List[List[States]]:
-        """Generates a 2D list to access all cells of the field"""
-        result = [[Field.States.empty for _ in range(
+        self._cells = [[Field.States.empty for _ in range(
             size.height)] for _ in range(size.width)]
-        return result
 
     def get_margins(self, cell: Coord) -> Dict[Direction, int]:
         """Returns dictionary keyed with directions.
