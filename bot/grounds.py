@@ -1,12 +1,12 @@
 """Contains Grounds class"""
-from bot import BaseBotDefensive, BaseBotOffensive
+from bot import BaseBot, DefenderBot
 
 
 class OneWayGround:
     """Only has one atacker and one defender"""
 
-    def __init__(self, attacker: BaseBotOffensive,
-                 defender: BaseBotDefensive) -> None:
+    def __init__(self, attacker: BaseBot,
+                 defender: DefenderBot) -> None:
         self.attacker = attacker
         self.defender = defender
         self.tick_count = 0

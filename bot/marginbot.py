@@ -4,17 +4,17 @@ import random
 from util import Coord
 
 from management import shotfinder
-from .huntingbot import HuntingBotOffensive
+from .huntingbot import HuntingBot
 
 
-class MarginBotOffensive(HuntingBotOffensive):
+class MarginBot(HuntingBot):
     """Shoots to the cell with the statistically highest
     chance of a ship being there"""
 
     def shoot(self) -> Coord:
         """Get next coordiate to shoot"""
         if self.open_hit is not None:
-            return HuntingBotOffensive.shoot(self)
+            return HuntingBot.shoot(self)
 
         shot_list = shotfinder.list_ship_probabilities(self.enemy_field)
         refined_shot_list = [shot[0]

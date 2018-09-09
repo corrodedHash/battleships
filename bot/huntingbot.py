@@ -2,18 +2,18 @@
 import random
 from typing import Optional
 
-from bot.basebot import BaseBotOffensive
+from bot.basebot import BaseBot
 from management import shotfinder
 from management.field import Field
 from management.ship import Ship
 from util import Coord
 
 
-class HuntingBotOffensive(BaseBotOffensive):
+class HuntingBot(BaseBot):
     """Base class that hunts ships if they are found"""
 
     def __init__(self, enemy_field: Field) -> None:
-        BaseBotOffensive.__init__(self, enemy_field)
+        BaseBot.__init__(self, enemy_field)
         self.open_hit = None #type: Optional[Ship]
 
     def shoot(self) -> Coord:

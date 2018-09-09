@@ -1,16 +1,19 @@
 """Contains random shit to benchmarks the bots"""
 from typing import Type
 
-from bot import MarginBotOffensive, CheckerBotOffensive
-from bot import RandomBotDefensive, OneWayGround, BaseBotOffensive
+from bot import MarginBot, CheckerBot
+from bot import DefenderBot, OneWayGround, BaseBot
+from bot.randombot import place_ships_random
 from management.field import Field
 from util import Size
 
 
-def benchbot(OffensiveBotClass: Type[BaseBotOffensive]) -> int:
+def benchbot(OffensiveBotClass: Type[BaseBot]) -> int:
     """Create a ground with a marginbot attacker and play"""
     attacker = OffensiveBotClass(Field(Size(10, 10)))
-    defender = RandomBotDefensive(Field(Size(10, 10)))
+    defender_field = Field(Size(10, 10))
+    defender_ships = place_ships_random(defender_field)
+    defender = DefenderBot(defender_field, defender_ships)
     ground = OneWayGround(attacker, defender)
 
     while not ground.tick():
@@ -20,7 +23,7 @@ def benchbot(OffensiveBotClass: Type[BaseBotOffensive]) -> int:
 
 def main() -> None:
     """Run the benchmarks"""
-    for BotClass in (CheckerBotOffensive, MarginBotOffensive):
+    for BotClass in (CheckerBot, MarginBot):
         results = []
         print(BotClass.__name__)
         print("[", end="")

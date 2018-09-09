@@ -3,17 +3,17 @@
 from util import Coord
 
 from management import shotfinder
-from .huntingbot import HuntingBotOffensive
+from .huntingbot import HuntingBot
 
 
-class CheckerBotOffensive(HuntingBotOffensive):
+class CheckerBot(HuntingBot):
     """Shoots to the cell with the statistically highest chance
     of a ship being there, while only hitting every second cell"""
 
     def shoot(self) -> Coord:
         """Get next coordiate to shoot"""
         if self.open_hit is not None:
-            return HuntingBotOffensive.shoot(self)
+            return HuntingBot.shoot(self)
 
         shot_list = shotfinder.list_ship_probabilities(self.enemy_field)
         improved_shot_list = []
