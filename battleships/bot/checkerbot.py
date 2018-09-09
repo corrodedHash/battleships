@@ -1,8 +1,8 @@
 """Contains CheckerBot class"""
 
-from util import Coord
+from ..util import Coord
 
-from management import shotfinder
+from ..management import shotfinder
 from .huntingbot import HuntingBot
 
 

@@ -4,9 +4,9 @@ and protecting variances"""
 import logging
 from typing import Optional, List
 
-from management.field import Field
-from management.ship import Ship
-from util import Coord
+from ..management.field import Field
+from ..management.ship import Ship
+from ..util import Coord
 
 
 class BaseBot:

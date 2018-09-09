@@ -2,8 +2,8 @@
 import cmd
 from typing import Optional
 
-import util
-from management import field, shotfinder, battleprinter
+from . import util
+from .management import field, shotfinder, battleprinter
 
 
 class BattleShell(cmd.Cmd):

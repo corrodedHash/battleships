@@ -1,9 +1,11 @@
 """Contains BattleShellTest class"""
 import unittest
 
-import battleshell
-from management import field
-from util import Coord
+from .context import battleships
+
+from battleships import battleshell
+from battleships.management import field
+from battleships.util import Coord
 
 
 class BattleShellTest(unittest.TestCase):

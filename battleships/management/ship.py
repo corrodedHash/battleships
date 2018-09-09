@@ -1,8 +1,8 @@
 """Contains Ship class"""
-from typing import List, Iterator, Tuple, Optional
+from typing import Iterator, Tuple, Optional
 
-from util import Coord, Orientation, change_orientation, DIRORI_MAP, DIRTUPLE_MAP
-from management.field import Field
+from ..util import Coord, Orientation, change_orientation, DIRORI_MAP, DIRTUPLE_MAP
+from ..management.field import Field
 
 
 class Ship(list):

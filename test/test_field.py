@@ -1,8 +1,9 @@
 """Contains the FieldTest class"""
 import unittest
 
-from management.field import Field
-from util import Size, Coord, Direction
+from .context import battleships
+from battleships.management.field import Field
+from battleships.util import Size, Coord, Direction
 
 
 class FieldTest(unittest.TestCase):

@@ -4,7 +4,7 @@ from enum import Enum
 import logging
 from typing import Optional, List, Dict, Iterator
 
-from util import Size, Coord, Direction, DIRTUPLE_MAP
+from ..util import Size, Coord, Direction, DIRTUPLE_MAP
 
 
 class Field:

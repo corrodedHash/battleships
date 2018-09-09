@@ -1,5 +1,5 @@
 """Contains Grounds class"""
-from bot import BaseBot, DefenderBot
+from .basebot import BaseBot, DefenderBot
 
 
 class OneWayGround:

@@ -2,11 +2,11 @@
 import random
 from typing import Optional
 
-from bot.basebot import BaseBot
-from management import shotfinder
-from management.field import Field
-from management.ship import Ship
-from util import Coord
+from .basebot import BaseBot
+from ..management import shotfinder
+from ..management.field import Field
+from ..management.ship import Ship
+from ..util import Coord
 
 
 class HuntingBot(BaseBot):

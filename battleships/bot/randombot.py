@@ -4,9 +4,9 @@ import random
 from typing import List, Optional
 import itertools
 
-from management.field import Field
-from management.ship import create_ship, Ship
-from util import Coord, Direction, DIRTUPLE_MAP
+from ..management.field import Field
+from ..management.ship import create_ship, Ship
+from ..util import Coord, Direction, DIRTUPLE_MAP
 
 def place_ships_random(battlefield: Field) -> List[Ship]:
     def _place_ship(shipsize: int) -> Ship:

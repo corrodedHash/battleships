@@ -2,7 +2,7 @@
 import random
 from typing import Union, List, Tuple, Iterable, Optional, Callable
 
-from util import Coord, to_alpha
+from ..util import Coord, to_alpha
 from .field import Field
 from . import shotfinder
 

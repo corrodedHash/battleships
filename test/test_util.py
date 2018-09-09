@@ -2,7 +2,8 @@
 import unittest
 import random
 
-from util import from_alpha, to_alpha, Direction, counter_clockwise, clockwise, Orientation, change_orientation, accumulate_orientation
+from .context import battleships
+from battleships.util import from_alpha, to_alpha, Direction, counter_clockwise, clockwise, Orientation, change_orientation, accumulate_orientation
 
 
 class UtilTest(unittest.TestCase):

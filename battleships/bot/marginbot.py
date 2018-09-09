@@ -1,9 +1,9 @@
 """Contains MarginBot class"""
 
 import random
-from util import Coord
+from ..util import Coord
 
-from management import shotfinder
+from ..management import shotfinder
 from .huntingbot import HuntingBot
 
 
