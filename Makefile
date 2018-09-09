@@ -6,7 +6,7 @@ test:
 	python -m unittest discover
 
 coverage:
-	coverage run -m unittest discover && coverage report
+	coverage run -m unittest discover && coverage report --skip-covered
 
 typing:
 	mypy --strict ${PROJECTNAME}
