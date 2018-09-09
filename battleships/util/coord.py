@@ -35,15 +35,6 @@ class Coord:
             return self.y
         raise KeyError
 
-    def __setitem__(self: 'Coord', key: int, value: int) -> None:
-        assert value >= 0
-        if key == 0:
-            self.x = value
-        elif key == 1:
-            self.y = value
-        else:
-            raise KeyError
-
     def __sub__(self: 'Coord', other: Tuple[int, int]) -> 'Coord':
         if isinstance(other, tuple):
             return Coord(self.x - other[0], self.y - other[1])

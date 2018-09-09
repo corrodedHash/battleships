@@ -28,3 +28,4 @@ class UtilTest(unittest.TestCase):
     def test_direction(self) -> None:
         self.assertEqual(Direction.top, counter_clockwise(Direction.right)) 
         self.assertEqual(Direction.left, clockwise(Direction.bottom))
+
