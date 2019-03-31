@@ -9,7 +9,7 @@ coverage:
 	coverage run -m unittest discover && coverage report --skip-covered
 
 typing:
-	mypy --strict ${PROJECTNAME}
+	mypy --strict ${PROJECTNAME} test
 
 linting:
-	pylint ${PROJECTNAME}
+	pylint ${PROJECTNAME} test
