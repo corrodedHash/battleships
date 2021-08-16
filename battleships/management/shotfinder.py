@@ -96,7 +96,7 @@ def hunt_ship(battlefield: Field, cell: Coord) -> List[Tuple[Coord, int]]:
 
     if ship_orientation == Orientation.both:
         raise RuntimeError
-    elif ship_orientation == Orientation.unknown:
+    if ship_orientation == Orientation.unknown:
         margin = battlefield.get_margins(cell)
         result_list.append(
             (cell + (0, -1), margin[Direction.top]))

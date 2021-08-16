@@ -41,7 +41,7 @@ class Field:
 
         return result
 
-    def __getitem__(self, key: Coord) -> States:
+    def __getitem__(self, key: Coord) -> "States":
         if isinstance(key, Coord):
             return self._cells[key.x][key.y]
 

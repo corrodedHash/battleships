@@ -34,7 +34,7 @@ class BattleShell(cmd.Cmd):
 
     def do_hunt(self, arg: str) -> None:
         """Hunt the ship under the cursor,
-        giving possible further localtions"""
+        giving possible further locations"""
         coord = self._parse_coord(arg)
         if coord is None:
             return

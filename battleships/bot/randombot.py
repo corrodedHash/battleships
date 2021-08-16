@@ -12,9 +12,9 @@ from ..util import Direction, DIRTUPLE_MAP
 def place_ships_random(battlefield: Field) -> List[Ship]:
     """Place ships in a field"""
     def _place_ship(shipsize: int) -> Ship:
-        shuffled_cells = list(battlefield.__iter__())
+        shuffled_cells = list(battlefield)
         random.shuffle(shuffled_cells)
-        shuffled_direction = list(Direction.__iter__())
+        shuffled_direction = list(Direction)
         random.shuffle(shuffled_direction)
         for cell, direction in itertools.product(
                 shuffled_cells, shuffled_direction):

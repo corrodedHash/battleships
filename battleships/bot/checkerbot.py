@@ -1,5 +1,6 @@
 """Contains CheckerBot class"""
 
+from typing import Callable, Tuple
 from ..util import Coord
 
 from ..management import shotfinder
@@ -16,10 +17,10 @@ class CheckerBot(HuntingBot):
             return HuntingBot.shoot(self)
 
         shot_list = shotfinder.list_ship_probabilities(self.enemy_field)
-        improved_shot_list = []
-        for shot in shot_list:
-            if shot[0].x % 2 == shot[0].y % 2:
-                improved_shot_list.append(shot[0])
+        is_checker: Callable[[Tuple[Coord, int]], bool] = (
+            lambda s: s[0].x % 2 == s[0].y % 2
+        )
+        improved_shot_list = [shot[0] for shot in shot_list if is_checker(shot)]
 
         if not improved_shot_list:
             coord_tuple = shot_list[0][0]

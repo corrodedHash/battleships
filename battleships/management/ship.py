@@ -5,7 +5,7 @@ from ..util import Coord, Orientation, change_orientation, DIRORI_MAP, DIRTUPLE_
 from ..management.field import Field
 
 
-class Ship(list):
+class Ship(list[Coord]):
     """Class to manage cellular ships"""
 
     def orientation(self) -> Orientation:
